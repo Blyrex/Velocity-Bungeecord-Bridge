@@ -1,5 +1,7 @@
 package com.github.velocity.bridge;
 
+import com.github.velocity.bridge.chat.BridgeProxyTitle;
+import lombok.Getter;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ConfigurationAdapter;
@@ -7,6 +9,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
+import net.md_5.bungee.config.Configuration;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -19,12 +22,23 @@ import java.util.logging.Logger;
 public final class ProxyServerBridge extends ProxyServer {
 
 
+    private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
+
+    public ProxyServerBridge(BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {
+        this.bungeeVelocityBridgePlugin = bungeeVelocityBridgePlugin;
+        ProxyServer.setInstance(this);
+    }
+
+    @Getter
+    public final Configuration configuration = new Configuration();
+
+    @Override
     public String getName() {
-        return null;
+        return "BungeeVelocityBridge";
     }
 
     public String getVersion() {
-        return null;
+        return (BungeeVelocityBridgePlugin.class.getPackage().getImplementationVersion() == null) ? "unknown" : BungeeVelocityBridgePlugin.class.getPackage().getImplementationVersion();
     }
 
     public String getTranslation(String name, Object... args) {
@@ -32,7 +46,7 @@ public final class ProxyServerBridge extends ProxyServer {
     }
 
     public Logger getLogger() {
-        return null;
+        return this.bungeeVelocityBridgePlugin.getLogger();
     }
 
     public Collection<ProxiedPlayer> getPlayers() {
@@ -152,6 +166,6 @@ public final class ProxyServerBridge extends ProxyServer {
     }
 
     public Title createTitle() {
-        return null;
+        return new BridgeProxyTitle(this.bungeeVelocityBridgePlugin.getServer());
     }
 }
