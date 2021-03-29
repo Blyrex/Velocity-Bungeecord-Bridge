@@ -8,7 +8,7 @@ import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class BridgeProxyTitle implements Title {
+public final class BridgeProxyTitle implements Title {
 
     private net.kyori.adventure.title.Title title = net.kyori.adventure.title.Title.title(Component.empty(), Component.empty());
     private final ProxyServer proxyServer;
