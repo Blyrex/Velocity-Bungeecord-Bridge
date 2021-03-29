@@ -20,8 +20,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class ProxyServerBridge extends ProxyServer {
-
-
     private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
 
     public ProxyServerBridge(BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {

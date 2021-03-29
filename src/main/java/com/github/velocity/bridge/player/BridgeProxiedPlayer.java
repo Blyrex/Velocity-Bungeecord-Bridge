@@ -1,12 +1,15 @@
 package com.github.velocity.bridge.player;
 
+import com.google.common.collect.Lists;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -16,18 +19,18 @@ import net.md_5.bungee.api.score.Scoreboard;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
 public final class BridgeProxiedPlayer implements ProxiedPlayer {
+    public static BaseComponent[] EMPTY_COMPONENT = new BaseComponent[]{new TextComponent()};
 
     private final ProxyServer velocityProxyServer;
     private final Player player;
     private String displayName;
+    private final List<String> permissions = Lists.newArrayList();
+    private final List<String> groups = Lists.newArrayList();
 
     public BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
         this.velocityProxyServer = velocityProxyServer;
@@ -91,7 +94,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public int getPing() {
-        return 0;
+        return (int) this.player.getPing();
     }
 
     @Override
@@ -106,7 +109,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void chat(String message) {
-
+        this.player.spoofChatInput(message);
     }
 
     @Override
@@ -121,32 +124,40 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public String getUUID() {
-        return null;
+        return this.player.getUniqueId().toString();
     }
 
     @Override
     public UUID getUniqueId() {
-        return null;
+        return this.player.getUniqueId();
     }
 
     @Override
     public Locale getLocale() {
-        return null;
+        return this.player.getPlayerSettings().getLocale();
     }
 
     @Override
     public byte getViewDistance() {
-        return 0;
+        return this.player.getPlayerSettings().getViewDistance();
     }
 
     @Override
     public ChatMode getChatMode() {
-        return null;
+        switch (this.player.getPlayerSettings().getChatMode()) {
+            case HIDDEN:
+                return ChatMode.HIDDEN;
+            case COMMANDS_ONLY:
+                return ChatMode.COMMANDS_ONLY;
+            case SHOWN:
+            default:
+                return ChatMode.SHOWN;
+        }
     }
 
     @Override
     public boolean hasChatColors() {
-        return false;
+        return this.player.getPlayerSettings().hasChatColors();
     }
 
     @Override
@@ -156,22 +167,31 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public MainHand getMainHand() {
-        return null;
+        switch (this.player.getPlayerSettings().getMainHand()) {
+            case LEFT:
+                return MainHand.LEFT;
+            default:
+            case RIGHT:
+                return MainHand.RIGHT;
+        }
     }
 
     @Override
     public void setTabHeader(BaseComponent header, BaseComponent footer) {
-
+        this.setTabHeader(new BaseComponent[]{header}, new BaseComponent[]{footer});
     }
 
     @Override
     public void setTabHeader(BaseComponent[] header, BaseComponent[] footer) {
-
+        this.player.sendPlayerListHeaderAndFooter(
+                BungeeComponentSerializer.get().deserialize(header),
+                BungeeComponentSerializer.get().deserialize(footer)
+        );
     }
 
     @Override
     public void resetTabHeader() {
-
+        this.setTabHeader(EMPTY_COMPONENT, EMPTY_COMPONENT);
     }
 
     @Override
@@ -181,12 +201,12 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public boolean isForgeUser() {
-        return false;
+        return this.player.getModInfo().isPresent();
     }
 
     @Override
     public Map<String, String> getModList() {
-        return null;
+        return new HashMap<>();
     }
 
     @Override
@@ -196,87 +216,93 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public String getName() {
-        return null;
+        return this.player.getUsername();
     }
 
     @Override
     public void sendMessage(String message) {
-
+        this.sendMessage(ChatMessageType.CHAT, TextComponent.fromLegacyText(message));
     }
 
     @Override
     public void sendMessages(String... messages) {
-
+        for (String message : messages) {
+            this.sendMessage(message);
+        }
     }
 
     @Override
     public void sendMessage(BaseComponent... message) {
-
+        this.sendMessage(ChatMessageType.CHAT, message);
     }
 
     @Override
     public void sendMessage(BaseComponent message) {
-
+        this.sendMessage(ChatMessageType.CHAT, message);
     }
 
     @Override
     public Collection<String> getGroups() {
-        return null;
+        return this.groups;
     }
 
     @Override
     public void addGroups(String... groups) {
-
+        this.groups.addAll(Arrays.asList(groups));
     }
 
     @Override
     public void removeGroups(String... groups) {
-
+        this.groups.removeAll(Arrays.asList(groups));
     }
 
     @Override
     public boolean hasPermission(String permission) {
-        return false;
+        return this.player.hasPermission(permission) || this.permissions.contains(permission);
     }
 
     @Override
     public void setPermission(String permission, boolean value) {
-
+        if (value) {
+            this.permissions.add(permission);
+        } else {
+            this.permissions.remove(permission);
+        }
     }
 
     @Override
     public Collection<String> getPermissions() {
-        return null;
+        return this.permissions;
     }
 
     @Override
     public InetSocketAddress getAddress() {
-        return null;
+        return this.player.getRemoteAddress();
     }
 
     @Override
     public SocketAddress getSocketAddress() {
-        return null;
+        return this.player.getRemoteAddress();
     }
 
     @Override
     public void disconnect(String reason) {
-
+        this.player.disconnect(Component.text(reason));
     }
 
     @Override
     public void disconnect(BaseComponent... reason) {
-
+        this.player.disconnect(BungeeComponentSerializer.get().deserialize(reason));
     }
 
     @Override
     public void disconnect(BaseComponent reason) {
-
+        this.player.disconnect(BungeeComponentSerializer.get().deserialize(new BaseComponent[]{reason}));
     }
 
     @Override
     public boolean isConnected() {
-        return false;
+        return this.player.isActive();
     }
 
     @Override
