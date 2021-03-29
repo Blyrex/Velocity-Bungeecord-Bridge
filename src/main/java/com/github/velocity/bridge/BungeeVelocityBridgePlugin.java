@@ -7,7 +7,8 @@ import lombok.Getter;
 
 import java.util.logging.Logger;
 
-@Plugin(id = "bungeevelocitybridge",
+@Plugin(
+        id = "bungeevelocitybridge",
         name = "BungeeVelocityBridge",
         version = "1.0.0-SNAPSHOT",
         authors = {"Blyrex", "0utplay"}

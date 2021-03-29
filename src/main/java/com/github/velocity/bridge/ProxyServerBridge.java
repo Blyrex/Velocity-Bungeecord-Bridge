@@ -26,7 +26,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public String getTranslation(String s, Object... objects) {
+    public String getTranslation(String name, Object... args) {
         return null;
     }
 
@@ -38,7 +38,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public ProxiedPlayer getPlayer(String s) {
+    public ProxiedPlayer getPlayer(String name) {
         return null;
     }
 
@@ -50,7 +50,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public ServerInfo getServerInfo(String s) {
+    public ServerInfo getServerInfo(String name) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public void setConfigurationAdapter(ConfigurationAdapter configurationAdapter) {
+    public void setConfigurationAdapter(ConfigurationAdapter adapter) {
 
     }
 
@@ -70,7 +70,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public void setReconnectHandler(ReconnectHandler reconnectHandler) {
+    public void setReconnectHandler(ReconnectHandler handler) {
 
     }
 
@@ -78,15 +78,15 @@ public class ProxyServerBridge extends ProxyServer {
 
     }
 
-    public void stop(String s) {
+    public void stop(String reason) {
 
     }
 
-    public void registerChannel(String s) {
+    public void registerChannel(String channel) {
 
     }
 
-    public void unregisterChannel(String s) {
+    public void unregisterChannel(String channel) {
 
     }
 
@@ -102,11 +102,11 @@ public class ProxyServerBridge extends ProxyServer {
         return 0;
     }
 
-    public ServerInfo constructServerInfo(String s, InetSocketAddress inetSocketAddress, String s1, boolean b) {
+    public ServerInfo constructServerInfo(String name, InetSocketAddress address, String motd, boolean restricted) {
         return null;
     }
 
-    public ServerInfo constructServerInfo(String s, SocketAddress socketAddress, String s1, boolean b) {
+    public ServerInfo constructServerInfo(String name, SocketAddress address, String motd, boolean restricted) {
         return null;
     }
 
@@ -126,15 +126,15 @@ public class ProxyServerBridge extends ProxyServer {
         return 0;
     }
 
-    public void broadcast(String s) {
+    public void broadcast(String message) {
 
     }
 
-    public void broadcast(BaseComponent... baseComponents) {
+    public void broadcast(BaseComponent... message) {
 
     }
 
-    public void broadcast(BaseComponent baseComponent) {
+    public void broadcast(BaseComponent message) {
 
     }
 
@@ -146,7 +146,7 @@ public class ProxyServerBridge extends ProxyServer {
         return null;
     }
 
-    public Collection<ProxiedPlayer> matchPlayer(String s) {
+    public Collection<ProxiedPlayer> matchPlayer(String match) {
         return null;
     }
 
