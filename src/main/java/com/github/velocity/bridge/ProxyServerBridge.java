@@ -16,7 +16,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class ProxyServerBridge extends ProxyServer {
+public final class ProxyServerBridge extends ProxyServer {
+
 
     public String getName() {
         return null;
