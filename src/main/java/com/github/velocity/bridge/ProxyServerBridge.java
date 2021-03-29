@@ -2,8 +2,11 @@ package com.github.velocity.bridge;
 
 import com.github.velocity.bridge.chat.BridgeProxyTitle;
 import lombok.Getter;
+import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ConfigurationAdapter;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -15,15 +18,18 @@ import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class ProxyServerBridge extends ProxyServer {
     private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
+    private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
 
     public ProxyServerBridge(BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {
         this.bungeeVelocityBridgePlugin = bungeeVelocityBridgePlugin;
+        this.velocityProxyServer = this.bungeeVelocityBridgePlugin.getServer();
         ProxyServer.setInstance(this);
     }
 
@@ -108,7 +114,7 @@ public final class ProxyServerBridge extends ProxyServer {
     }
 
     public String getGameVersion() {
-        return null;
+        return "";
     }
 
     public int getProtocolVersion() {
@@ -136,23 +142,23 @@ public final class ProxyServerBridge extends ProxyServer {
     }
 
     public int getOnlineCount() {
-        return 0;
+        return this.velocityProxyServer.getPlayerCount();
     }
 
     public void broadcast(String message) {
-
+        this.broadcast(TextComponent.fromLegacyText(message));
     }
 
     public void broadcast(BaseComponent... message) {
-
+        this.velocityProxyServer.sendMessage(Identity.nil(), BungeeComponentSerializer.get().deserialize(message));
     }
 
     public void broadcast(BaseComponent message) {
-
+        this.broadcast(new BaseComponent[]{message});
     }
 
     public Collection<String> getDisabledCommands() {
-        return null;
+        return Collections.emptyList();
     }
 
     public ProxyConfig getConfig() {
@@ -164,6 +170,6 @@ public final class ProxyServerBridge extends ProxyServer {
     }
 
     public Title createTitle() {
-        return new BridgeProxyTitle(this.bungeeVelocityBridgePlugin.getServer());
+        return new BridgeProxyTitle(this.velocityProxyServer);
     }
 }
