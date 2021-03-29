@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class BridgeTaskScheduler implements TaskScheduler {
     private final ProxyServer velocityProxyServer;
-    private final Map<Integer, ScheduledTask> scheduledTaskMap;
+    private final Map<Integer, ScheduledTask> scheduledTaskMap = new HashMap<>();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(Integer.MAX_VALUE);
     private final Random random = new Random();
@@ -27,7 +27,6 @@ public class BridgeTaskScheduler implements TaskScheduler {
 
     public BridgeTaskScheduler(ProxyServer velocityProxyServer) {
         this.velocityProxyServer = velocityProxyServer;
-        this.scheduledTaskMap = new HashMap<>();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class BridgeTaskScheduler implements TaskScheduler {
 
     @Override
     public int cancel(Plugin plugin) {
-        Maps.newHashMap(this.scheduledTaskMap).forEach((id, task) -> {
+        new HashMap<>(this.scheduledTaskMap).forEach((id, task) -> {
             if (task.getOwner().equals(plugin)) {
                 task.cancel();
                 this.scheduledTaskMap.remove(id);

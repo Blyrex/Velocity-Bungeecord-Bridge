@@ -1,6 +1,5 @@
 package com.github.velocity.bridge.player;
 
-import com.google.common.collect.Lists;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
@@ -29,8 +28,8 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     private final ProxyServer velocityProxyServer;
     private final Player player;
     private String displayName;
-    private final List<String> permissions = Lists.newArrayList();
-    private final List<String> groups = Lists.newArrayList();
+    private final List<String> permissions = new ArrayList<>();
+    private final List<String> groups = new ArrayList<>();
 
     private BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
         this.velocityProxyServer = velocityProxyServer;
