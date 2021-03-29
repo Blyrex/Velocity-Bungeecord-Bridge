@@ -1,14 +1,12 @@
 package com.github.velocity.bridge.player;
 
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -27,32 +25,38 @@ import java.util.UUID;
 @Setter
 public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
+    private final ProxyServer velocityProxyServer;
     private final Player player;
     private String displayName;
 
-    public BridgeProxiedPlayer(Player player) {
+    public BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
+        this.velocityProxyServer = velocityProxyServer;
         this.player = player;
         this.displayName = this.player.getUsername();
     }
 
     @Override
     public void sendMessage(ChatMessageType position, BaseComponent... message) {
-        this.player.sendMessage(BungeeComponentSerializer.get().deserialize(message));
+        if (position.equals(ChatMessageType.CHAT)) {
+            this.player.sendMessage(BungeeComponentSerializer.get().deserialize(message));
+        } else if (position.equals(ChatMessageType.ACTION_BAR)) {
+            this.player.sendActionBar(BungeeComponentSerializer.get().deserialize(message));
+        }
     }
 
     @Override
     public void sendMessage(ChatMessageType position, BaseComponent message) {
-
+        this.sendMessage(position, new BaseComponent[]{message});
     }
 
     @Override
     public void sendMessage(UUID sender, BaseComponent... message) {
-
+        this.sendMessage(ChatMessageType.CHAT, message);
     }
 
     @Override
     public void sendMessage(UUID sender, BaseComponent message) {
-
+        this.sendMessage(ChatMessageType.CHAT, message);
     }
 
     @Override
