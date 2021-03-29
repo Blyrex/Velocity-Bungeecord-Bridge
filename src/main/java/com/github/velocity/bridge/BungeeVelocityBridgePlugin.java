@@ -2,9 +2,11 @@ package com.github.velocity.bridge;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 @Plugin(
@@ -13,16 +15,17 @@ import java.util.logging.Logger;
         version = "1.0.0-SNAPSHOT",
         authors = {"Blyrex", "0utplay"}
 )
+@Getter
 public class BungeeVelocityBridgePlugin {
 
-    @Getter
     private final ProxyServer server;
-    @Getter
     private final Logger logger;
+    private final Path dataDirectory;
 
     @Inject
-    public BungeeVelocityBridgePlugin(ProxyServer server, Logger logger) {
+    public BungeeVelocityBridgePlugin(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
         this.server = server;
         this.logger = logger;
+        this.dataDirectory = dataDirectory;
     }
 }

@@ -32,7 +32,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     private final List<String> permissions = Lists.newArrayList();
     private final List<String> groups = Lists.newArrayList();
 
-    public BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
+    private BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
         this.velocityProxyServer = velocityProxyServer;
         this.player = player;
         this.displayName = this.player.getUsername();
@@ -308,5 +308,9 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     @Override
     public Unsafe unsafe() {
         return null;
+    }
+
+    public static ProxiedPlayer fromVelocity(ProxyServer velocityProxyServer, Player player) {
+        return new BridgeProxiedPlayer(velocityProxyServer, player);
     }
 }

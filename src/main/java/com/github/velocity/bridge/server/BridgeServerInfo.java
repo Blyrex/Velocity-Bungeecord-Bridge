@@ -48,7 +48,7 @@ public final class BridgeServerInfo implements ServerInfo {
     public Collection<ProxiedPlayer> getPlayers() {
         return this.registeredServer.getPlayersConnected()
                 .stream()
-                .map(player -> new BridgeProxiedPlayer(this.proxyServer, player))
+                .map(player -> BridgeProxiedPlayer.fromVelocity(this.proxyServer, player))
                 .collect(Collectors.toList());
     }
 
