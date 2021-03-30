@@ -5,7 +5,10 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.protocol.packet.Chat;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -18,9 +21,19 @@ public class BridgeEventListener {
 
     @Subscribe
     public void handlePlayerChat(PlayerChatEvent event) {
-        if(!event.getMessage().startsWith("/")) {
+        if(event.getMessage().charAt(0) != '/') {
             return;
         }
+
+        ProxiedPlayer proxiedPlayer = BridgeProxiedPlayer.fromVelocity(this.velocityProxyServer, event.getPlayer());
+        ChatEvent chatEvent = new ChatEvent(proxiedPlayer, proxiedPlayer, event.getMessage());
+        this.proxyServer.getPluginManager().callEvent(chatEvent);
+
+        if(chatEvent.isCancelled()) {
+            event.setResult(PlayerChatEvent.ChatResult.denied());
+            return;
+        }
+
         String[] args = event.getMessage().split(" ");
         for (Map.Entry<String, Command> commandEntry : this.proxyServer.getPluginManager().getCommands()) {
             if(!args[0].equalsIgnoreCase(commandEntry.getKey())) {
