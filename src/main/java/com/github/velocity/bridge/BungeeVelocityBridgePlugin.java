@@ -1,5 +1,6 @@
 package com.github.velocity.bridge;
 
+import com.github.velocity.bridge.velocity.BridgeEventListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
@@ -27,5 +28,8 @@ public class BungeeVelocityBridgePlugin {
         this.server = server;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+
+        net.md_5.bungee.api.ProxyServer bungeeProxyServer = new ProxyServerBridge(this);
+        this.server.getEventManager().register(this, new BridgeEventListener(bungeeProxyServer, this.server));
     }
 }

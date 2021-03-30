@@ -1,9 +1,9 @@
 package com.github.velocity.bridge.scheduler;
 
 import com.github.velocity.bridge.scheduler.unsafe.UnsafeTaskScheduler;
-import com.google.common.collect.Maps;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
@@ -17,6 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Getter
+@RequiredArgsConstructor
 public class BridgeTaskScheduler implements TaskScheduler {
     private final ProxyServer velocityProxyServer;
     private final Map<Integer, ScheduledTask> scheduledTaskMap = new HashMap<>();
@@ -24,10 +25,6 @@ public class BridgeTaskScheduler implements TaskScheduler {
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(Integer.MAX_VALUE);
     private final Random random = new Random();
     private final Unsafe unsafe = new UnsafeTaskScheduler(this);
-
-    public BridgeTaskScheduler(ProxyServer velocityProxyServer) {
-        this.velocityProxyServer = velocityProxyServer;
-    }
 
     @Override
     public void cancel(int id) {
