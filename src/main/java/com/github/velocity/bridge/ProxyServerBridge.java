@@ -17,9 +17,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ConfigurationAdapter;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.PluginDescription;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
 import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.event.EventBus;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -31,20 +34,32 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Getter
 public final class ProxyServerBridge extends ProxyServer {
     private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
     private final CommandSender consoleCommandSender;
     private final TaskScheduler taskScheduler;
     private final Path pluginsFolder;
+    private final PluginManager pluginManager;
 
     public ProxyServerBridge(BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {
+        // Set ProxyServer instance
+        ProxyServer.setInstance(this);
         this.bungeeVelocityBridgePlugin = bungeeVelocityBridgePlugin;
         this.velocityProxyServer = this.bungeeVelocityBridgePlugin.getServer();
         this.consoleCommandSender = new BridgeConsoleSender(this.velocityProxyServer);
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
-        ProxyServer.setInstance(this);
+        this.pluginManager = new PluginManager(this, new Yaml(), new EventBus());
+        this.loadPlugins();
+    }
+
+    private void loadPlugins() {
+        System.out.println(PluginDescription.class.getName());
+        this.pluginManager.detectPlugins(this.pluginsFolder.toFile());
+        this.pluginManager.loadPlugins();
+        this.pluginManager.enablePlugins();
     }
 
     @SneakyThrows
@@ -118,11 +133,6 @@ public final class ProxyServerBridge extends ProxyServer {
     @Override
     public ServerInfo getServerInfo(String name) {
         return this.getServers().get(name);
-    }
-
-    @Override
-    public PluginManager getPluginManager() {
-        return null;
     }
 
     @Override

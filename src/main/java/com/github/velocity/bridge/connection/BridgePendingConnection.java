@@ -20,7 +20,6 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class BridgePendingConnection implements PendingConnection {
-
     private final Player player;
     private final ProxyServer proxyServer;
 
