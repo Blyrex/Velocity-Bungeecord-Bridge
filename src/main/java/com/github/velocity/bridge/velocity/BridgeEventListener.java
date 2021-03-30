@@ -53,7 +53,7 @@ public class BridgeEventListener {
     @Subscribe
     public void handlePlayerLogin(LoginEvent event) {
         Player player = event.getPlayer();
-        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer());
+        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer(), this.velocityProxyServer);
 
         PreLoginEvent preLoginEvent = new PreLoginEvent(pendingConnection, (result, error) -> {
             if (result.isCancelled()) {

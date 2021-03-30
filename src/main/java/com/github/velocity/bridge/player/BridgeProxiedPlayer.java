@@ -195,7 +195,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void sendTitle(Title title) {
-
+        title.send(this);
     }
 
     @Override
