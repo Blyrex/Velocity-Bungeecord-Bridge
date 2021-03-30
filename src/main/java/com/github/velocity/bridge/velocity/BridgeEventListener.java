@@ -4,12 +4,13 @@ import com.github.velocity.bridge.connection.BridgePendingConnection;
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.LoginEvent;
+import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -26,7 +27,7 @@ public class BridgeEventListener {
 
     @Subscribe
     public void handlePlayerChat(PlayerChatEvent event) {
-        if(event.getMessage().charAt(0) != '/') {
+        if (event.getMessage().charAt(0) != '/') {
             return;
         }
 
@@ -34,15 +35,15 @@ public class BridgeEventListener {
         ChatEvent chatEvent = new ChatEvent(proxiedPlayer, proxiedPlayer, event.getMessage());
         this.proxyServer.getPluginManager().callEvent(chatEvent);
 
-        if(chatEvent.isCancelled()) {
+        if (chatEvent.isCancelled()) {
             event.setResult(PlayerChatEvent.ChatResult.denied());
             return;
         }
 
         String[] args = event.getMessage().split(" ");
         for (Map.Entry<String, Command> commandEntry : this.proxyServer.getPluginManager().getCommands()) {
-            if(!args[0].equalsIgnoreCase(commandEntry.getKey())) {
-               continue;
+            if (!args[0].equalsIgnoreCase(commandEntry.getKey())) {
+                continue;
             }
             commandEntry.getValue().execute(BridgeProxiedPlayer.fromVelocity(this.velocityProxyServer, event.getPlayer()), Arrays.copyOfRange(args, 1, args.length));
             break;
@@ -52,13 +53,28 @@ public class BridgeEventListener {
     @Subscribe
     public void handlePlayerLogin(LoginEvent event) {
         Player player = event.getPlayer();
-        PreLoginEvent preLoginEvent = new PreLoginEvent(new BridgePendingConnection(event.getPlayer()), new Callback<PreLoginEvent>() {
-            @Override
-            public void done(PreLoginEvent result, Throwable error) {
-                if(result.isCancelled()) {
-                    player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));
-                }
+        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer());
+
+        PreLoginEvent preLoginEvent = new PreLoginEvent(pendingConnection, (result, error) -> {
+            if (result.isCancelled()) {
+                player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));
             }
         });
+        this.proxyServer.getPluginManager().callEvent(preLoginEvent);
+
+        net.md_5.bungee.api.event.LoginEvent loginEvent = new net.md_5.bungee.api.event.LoginEvent(pendingConnection, (result, error) -> {
+            if (result.isCancelled()) {
+                player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));
+            }
+        });
+        this.proxyServer.getPluginManager().callEvent(loginEvent);
+    }
+
+    @Subscribe
+    public void handlePostPlayerLogin(PostLoginEvent event) {
+        net.md_5.bungee.api.event.PostLoginEvent postLoginEvent = new net.md_5.bungee.api.event
+                .PostLoginEvent(BridgeProxiedPlayer.fromVelocity(this.velocityProxyServer, event.getPlayer()));
+
+        this.proxyServer.getPluginManager().callEvent(postLoginEvent);
     }
 }
