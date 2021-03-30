@@ -40,9 +40,9 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     @Override
     public void sendMessage(ChatMessageType position, BaseComponent... message) {
         if (position.equals(ChatMessageType.CHAT)) {
-            this.player.sendMessage(BungeeComponentSerializer.get().deserialize(message));
+            this.player.sendMessage(BungeeComponentSerializer.legacy().deserialize(message));
         } else if (position.equals(ChatMessageType.ACTION_BAR)) {
-            this.player.sendActionBar(BungeeComponentSerializer.get().deserialize(message));
+            this.player.sendActionBar(BungeeComponentSerializer.legacy().deserialize(message));
         }
     }
 
@@ -183,8 +183,8 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     @Override
     public void setTabHeader(BaseComponent[] header, BaseComponent[] footer) {
         this.player.sendPlayerListHeaderAndFooter(
-                BungeeComponentSerializer.get().deserialize(header),
-                BungeeComponentSerializer.get().deserialize(footer)
+                BungeeComponentSerializer.legacy().deserialize(header),
+                BungeeComponentSerializer.legacy().deserialize(footer)
         );
     }
 
@@ -291,12 +291,12 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void disconnect(BaseComponent... reason) {
-        this.player.disconnect(BungeeComponentSerializer.get().deserialize(reason));
+        this.player.disconnect(BungeeComponentSerializer.legacy().deserialize(reason));
     }
 
     @Override
     public void disconnect(BaseComponent reason) {
-        this.player.disconnect(BungeeComponentSerializer.get().deserialize(new BaseComponent[]{reason}));
+        this.player.disconnect(BungeeComponentSerializer.legacy().deserialize(new BaseComponent[]{reason}));
     }
 
     @Override

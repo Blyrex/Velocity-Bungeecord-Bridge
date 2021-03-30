@@ -22,7 +22,7 @@ public final class BridgeProxyTitle implements Title {
     }
 
     public Title title(BaseComponent... text) {
-        Component textComponent = BungeeComponentSerializer.get().deserialize(text);
+        Component textComponent = BungeeComponentSerializer.legacy().deserialize(text);
         this.title = net.kyori.adventure.title.Title.title(textComponent, this.title.subtitle());
         return this;
     }
@@ -32,7 +32,7 @@ public final class BridgeProxyTitle implements Title {
     }
 
     public Title subTitle(BaseComponent... text) {
-        Component textComponent = BungeeComponentSerializer.get().deserialize(text);
+        Component textComponent = BungeeComponentSerializer.legacy().deserialize(text);
         this.title = net.kyori.adventure.title.Title.title(this.title.title(), textComponent);
         return this;
     }

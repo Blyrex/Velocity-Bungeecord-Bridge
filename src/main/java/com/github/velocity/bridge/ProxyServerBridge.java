@@ -217,7 +217,7 @@ public final class ProxyServerBridge extends ProxyServer {
 
     @Override
     public void broadcast(BaseComponent... message) {
-        this.velocityProxyServer.sendMessage(Identity.nil(), BungeeComponentSerializer.get().deserialize(message));
+        this.velocityProxyServer.sendMessage(Identity.nil(), BungeeComponentSerializer.legacy().deserialize(message));
     }
 
     @Override

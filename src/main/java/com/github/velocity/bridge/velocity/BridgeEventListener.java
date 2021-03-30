@@ -1,14 +1,19 @@
 package com.github.velocity.bridge.velocity;
 
+import com.github.velocity.bridge.connection.BridgePendingConnection;
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.LoginEvent;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
+import com.velocitypowered.api.proxy.Player;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
+import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.protocol.packet.Chat;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -42,5 +47,18 @@ public class BridgeEventListener {
             commandEntry.getValue().execute(BridgeProxiedPlayer.fromVelocity(this.velocityProxyServer, event.getPlayer()), Arrays.copyOfRange(args, 1, args.length));
             break;
         }
+    }
+
+    @Subscribe
+    public void handlePlayerLogin(LoginEvent event) {
+        Player player = event.getPlayer();
+        PreLoginEvent preLoginEvent = new PreLoginEvent(new BridgePendingConnection(event.getPlayer()), new Callback<PreLoginEvent>() {
+            @Override
+            public void done(PreLoginEvent result, Throwable error) {
+                if(result.isCancelled()) {
+                    player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));
+                }
+            }
+        });
     }
 }

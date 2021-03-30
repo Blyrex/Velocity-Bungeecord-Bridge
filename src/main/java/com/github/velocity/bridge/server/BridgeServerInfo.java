@@ -93,7 +93,7 @@ public final class BridgeServerInfo implements ServerInfo {
                                     serverPing.getVersion().getName(), serverPing.getVersion().getProtocol()
                             ),
                             new ServerPing.Players(1, 1, null),
-                            BungeeComponentSerializer.get().serialize(serverPing.getDescriptionComponent())[0],
+                            BungeeComponentSerializer.legacy().serialize(serverPing.getDescriptionComponent())[0],
                             Favicon.create(serverPing.getFavicon().get().getBase64Url())
                     ),
                     null

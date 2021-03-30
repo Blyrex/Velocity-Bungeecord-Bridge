@@ -38,7 +38,7 @@ public final class BridgeConsoleSender implements CommandSender {
     public void sendMessage(BaseComponent... message) {
         this.velocityProxyServer
                 .getConsoleCommandSource()
-                .sendMessage(BungeeComponentSerializer.get().deserialize(message));
+                .sendMessage(BungeeComponentSerializer.legacy().deserialize(message));
     }
 
     @Override
