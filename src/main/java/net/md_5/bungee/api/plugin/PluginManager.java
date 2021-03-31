@@ -1,5 +1,7 @@
 package net.md_5.bungee.api.plugin;
 
+import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
+import com.github.velocity.bridge.classloader.VelocityClassLoaderInjector;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -16,8 +18,7 @@ import org.yaml.snakeyaml.introspector.PropertyUtils;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -31,14 +32,16 @@ public class PluginManager {
     /*========================================================================*/
     private final Yaml yaml;
     private final EventBus eventBus;
+    private final VelocityClassLoaderInjector velocityClassLoaderInjector;
     private final Map<String, Plugin> plugins = new LinkedHashMap<>();
     private final Map<String, Command> commandMap = new HashMap<>();
     private Map<String, PluginDescription> toLoad = new HashMap<>();
     private final Multimap<Plugin, Command> commandsByPlugin = ArrayListMultimap.create();
     private final Multimap<Plugin, Listener> listenersByPlugin = ArrayListMultimap.create();
 
-    public PluginManager(ProxyServer proxy) {
+    public PluginManager(ProxyServer proxy, BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {
         this.proxy = proxy;
+        this.velocityClassLoaderInjector = new VelocityClassLoaderInjector(bungeeVelocityBridgePlugin);
 
         // Ignore unknown entries in the plugin descriptions
         Constructor yamlConstructor = new CustomClassLoaderConstructor(PluginDescription.class.getClassLoader());
@@ -261,7 +264,7 @@ public class PluginManager {
 
         // do actual loading
         if (status) {
-            try {
+           /* try {
                 URLClassLoader loader = new PluginClassloader(proxy, plugin, new URL[]
                         {
                                 plugin.getFile().toURI().toURL()
@@ -277,6 +280,23 @@ public class PluginManager {
                         });
             } catch (Throwable t) {
                 proxy.getLogger().log(Level.WARNING, "Error enabling plugin " + plugin.getName(), t);
+            }*/
+
+            try {
+                Path path = plugin.getFile().toPath();
+                this.velocityClassLoaderInjector.addPath(path);
+
+                Class<?> main = this.velocityClassLoaderInjector.loadClass(plugin.getMain());
+                Plugin clazz = (Plugin) main.getDeclaredConstructor().newInstance();
+
+                plugins.put(plugin.getName(), clazz);
+                clazz.onLoad();
+                ProxyServer.getInstance().getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
+                        {
+                                plugin.getName(), plugin.getVersion(), plugin.getAuthor()
+                        });
+            }catch (Exception exception) {
+                proxy.getLogger().log(Level.WARNING, "Error enabling plugin " + plugin.getName(), exception);
             }
         }
 

@@ -48,7 +48,7 @@ public final class ProxyServerBridge extends ProxyServer {
         this.consoleCommandSender = new BridgeConsoleSender(this.velocityProxyServer);
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
-        this.pluginManager = new PluginManager(this);
+        this.pluginManager = new PluginManager(this, this.bungeeVelocityBridgePlugin);
         this.loadPlugins();
     }
 

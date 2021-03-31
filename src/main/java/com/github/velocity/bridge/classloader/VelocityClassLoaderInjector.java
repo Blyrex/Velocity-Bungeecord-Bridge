@@ -20,7 +20,7 @@ public final class VelocityClassLoaderInjector {
     public VelocityClassLoaderInjector(BungeeVelocityBridgePlugin plugin) {
         this.plugin = plugin;
         try {
-            this.velocityPluginClassLoaderClass = Class.forName("com.velocitypowered.proxy.plugin");
+            this.velocityPluginClassLoaderClass = Class.forName("com.velocitypowered.proxy.plugin.URLClassLoader");
             this.velocityPluginClassLoader
                     = this.velocityPluginClassLoaderClass
                     .getDeclaredConstructor()
