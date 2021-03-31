@@ -6,7 +6,9 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 @Getter
@@ -22,11 +24,10 @@ public final class VelocityClassLoaderInjector {
         try {
             this.velocityPluginClassLoaderClass = Class.forName("com.velocitypowered.proxy.plugin.PluginClassLoader");
             this.velocityPluginClassLoader
-                    = this.velocityPluginClassLoaderClass
-                    .getDeclaredConstructor()
-                    .newInstance();
+                    = this.velocityPluginClassLoaderClass.getConstructor(URL[].class).newInstance((Object) new URL[0]);
             this.addPathMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addPath", Path.class);
+            System.out.println(Arrays.toString(this.velocityPluginClassLoaderClass.getMethods()));
             this.loadClassMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("loadClass", String.class, Boolean.class);
             this.velocityPluginClassLoaderClass
