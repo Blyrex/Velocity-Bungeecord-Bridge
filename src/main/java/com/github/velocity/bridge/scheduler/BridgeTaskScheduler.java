@@ -1,6 +1,5 @@
 package com.github.velocity.bridge.scheduler;
 
-import com.github.velocity.bridge.scheduler.unsafe.UnsafeTaskScheduler;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class BridgeTaskScheduler implements TaskScheduler {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(Integer.MAX_VALUE);
     private final Random random = new Random();
-    private final Unsafe unsafe = new UnsafeTaskScheduler(this);
+    private final Unsafe unsafe = (plugin -> this.executorService);
 
     @Override
     public void cancel(int id) {
