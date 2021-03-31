@@ -9,7 +9,6 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -21,14 +20,12 @@ import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.score.Scoreboard;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
-public final class BridgeProxiedPlayer implements ProxiedPlayer {
+public final class BridgeProxiedPlayer extends BridgePendingConnection implements ProxiedPlayer {
     private static final BaseComponent[] EMPTY_COMPONENT = new BaseComponent[]{new TextComponent()};
 
     private final ProxyServer velocityProxyServer;
@@ -38,6 +35,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     private final List<String> groups = new ArrayList<>();
 
     private BridgeProxiedPlayer(ProxyServer velocityProxyServer, Player player) {
+        super(player, velocityProxyServer);
         this.velocityProxyServer = velocityProxyServer;
         this.player = player;
         this.displayName = this.player.getUsername();
@@ -290,36 +288,6 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
     @Override
     public Collection<String> getPermissions() {
         return this.permissions;
-    }
-
-    @Override
-    public InetSocketAddress getAddress() {
-        return this.player.getRemoteAddress();
-    }
-
-    @Override
-    public SocketAddress getSocketAddress() {
-        return this.player.getRemoteAddress();
-    }
-
-    @Override
-    public void disconnect(String reason) {
-        this.player.disconnect(Component.text(reason));
-    }
-
-    @Override
-    public void disconnect(BaseComponent... reason) {
-        this.player.disconnect(BungeeComponentSerializer.legacy().deserialize(reason));
-    }
-
-    @Override
-    public void disconnect(BaseComponent reason) {
-        this.player.disconnect(BungeeComponentSerializer.legacy().deserialize(new BaseComponent[]{reason}));
-    }
-
-    @Override
-    public boolean isConnected() {
-        return this.player.isActive();
     }
 
     @Override

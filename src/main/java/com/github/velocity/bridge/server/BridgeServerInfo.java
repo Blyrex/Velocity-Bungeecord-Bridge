@@ -6,6 +6,7 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.Favicon;
@@ -55,7 +56,7 @@ public class BridgeServerInfo implements ServerInfo {
     @SneakyThrows
     @Override
     public String getMotd() {
-        return this.registeredServer.ping().get().getDescriptionComponent().toString();
+        return LegacyComponentSerializer.legacySection().serialize(this.registeredServer.ping().get().getDescriptionComponent());
     }
 
     @Override

@@ -8,8 +8,12 @@ import net.md_5.bungee.api.connection.Server;
 
 public class BridgeServer extends BridgeServerInfo implements Server {
 
+    private final ProxyServer proxyServer;
+
     public BridgeServer(ProxyServer proxyServer, RegisteredServer registeredServer) {
         super(proxyServer, registeredServer);
+
+        this.proxyServer = proxyServer;
     }
 
     @Override
@@ -18,23 +22,17 @@ public class BridgeServer extends BridgeServerInfo implements Server {
     }
 
     @Override
-    public void disconnect(String reason) {
-
-    }
+    public void disconnect(String reason) {}
 
     @Override
-    public void disconnect(BaseComponent... reason) {
-
-    }
+    public void disconnect(BaseComponent... reason) {}
 
     @Override
-    public void disconnect(BaseComponent reason) {
-
-    }
+    public void disconnect(BaseComponent reason) {}
 
     @Override
     public boolean isConnected() {
-        return true;
+        return this.proxyServer.getServer(this.getName()).isPresent();
     }
 
     @Override

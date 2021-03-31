@@ -1,4 +1,4 @@
-package com.github.velocity.bridge.velocity.command;
+package com.github.velocity.bridge.velocity.event;
 
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.velocitypowered.api.event.PostOrder;

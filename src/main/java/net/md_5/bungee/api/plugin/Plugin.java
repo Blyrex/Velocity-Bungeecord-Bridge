@@ -1,6 +1,5 @@
 package net.md_5.bungee.api.plugin;
 
-import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
@@ -23,40 +22,19 @@ public class Plugin {
     @Getter
     private Logger logger;
 
-    public Plugin()
-    {
-     /*   ClassLoader classLoader = getClass().getClassLoader();
-        Preconditions.checkState( classLoader instanceof PluginClassloader, "Plugin requires " + PluginClassloader.class.getName() );
-
-        ( (PluginClassloader) classLoader ).init( this );*/
-
-    }
-
-    protected Plugin(ProxyServer proxy, PluginDescription description)
-    {
-        ClassLoader classLoader = getClass().getClassLoader();
-        Preconditions.checkState( !( classLoader instanceof PluginClassloader ), "Cannot use initialization constructor at runtime" );
-
-        // init( proxy, description );
-    }
-
-
-    public void onLoad()
-    {
+    public void onLoad() {
     }
 
     /**
      * Called when this plugin is enabled.
      */
-    public void onEnable()
-    {
+    public void onEnable() {
     }
 
     /**
      * Called when this plugin is disabled.
      */
-    public void onDisable()
-    {
+    public void onDisable() {
     }
 
     /**
@@ -65,9 +43,8 @@ public class Plugin {
      *
      * @return the data folder of this plugin
      */
-    public final File getDataFolder()
-    {
-        return new File( getProxy().getPluginsFolder(), getDescription().getName() );
+    public final File getDataFolder() {
+        return new File(getProxy().getPluginsFolder(), getDescription().getName());
     }
 
     /**
@@ -78,36 +55,32 @@ public class Plugin {
      * @return the stream for getting this resource, or null if it does not
      * exist
      */
-    public final InputStream getResourceAsStream(String name)
-    {
-        return getClass().getClassLoader().getResourceAsStream( name );
+    public final InputStream getResourceAsStream(String name) {
+        return getClass().getClassLoader().getResourceAsStream(name);
     }
 
     /**
      * Called by the loader to initialize the fields in this plugin.
      *
-     * @param proxy current proxy instance
+     * @param proxy       current proxy instance
      * @param description the description that describes this plugin
      */
-    final void init(ProxyServer proxy, PluginDescription description)
-    {
+    final void init(ProxyServer proxy, PluginDescription description) {
         this.proxy = proxy;
         this.description = description;
         this.file = description.getFile();
-        this.logger = new PluginLogger( this );
+        this.logger = new PluginLogger(this);
     }
 
     //
     private ExecutorService service;
 
     @Deprecated
-    public ExecutorService getExecutorService()
-    {
-        if ( service == null )
-        {
-            String name = ( getDescription() == null ) ? "unknown" : getDescription().getName();
-            service = Executors.newCachedThreadPool( new ThreadFactoryBuilder().setNameFormat( name + " Pool Thread #%1$d" )
-                    .setThreadFactory( new GroupedThreadFactory( this, name ) ).build() );
+    public ExecutorService getExecutorService() {
+        if (service == null) {
+            String name = (getDescription() == null) ? "unknown" : getDescription().getName();
+            service = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat(name + " Pool Thread #%1$d")
+                    .setThreadFactory(new GroupedThreadFactory(this, name)).build());
         }
         return service;
     }

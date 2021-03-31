@@ -33,11 +33,8 @@ public final class VelocityClassLoaderInjector {
             this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addToClassloaders")
                     .invoke(this.velocityPluginClassLoader);
-        } catch (ClassNotFoundException exception) {
-            this.plugin.getLogger().log(Level.WARNING, "Cannot find Velocity PluginClassLoader. Please make sure to use the newest Velocity Version!");
-            exception.printStackTrace();
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            this.plugin.getLogger().log(Level.WARNING, "Cannot find Velocity PluginClassLoader. Please make sure to use the newest Velocity Version!", e);
         }
     }
 
