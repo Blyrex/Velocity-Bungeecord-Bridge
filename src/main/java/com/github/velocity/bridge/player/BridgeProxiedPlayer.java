@@ -1,7 +1,9 @@
 package com.github.velocity.bridge.player;
 
+import com.github.velocity.bridge.connection.BridgePendingConnection;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -23,7 +25,7 @@ import java.util.*;
 @Getter
 @Setter
 public final class BridgeProxiedPlayer implements ProxiedPlayer {
-    public static BaseComponent[] EMPTY_COMPONENT = new BaseComponent[]{new TextComponent()};
+    private static final BaseComponent[] EMPTY_COMPONENT = new BaseComponent[]{new TextComponent()};
 
     private final ProxyServer velocityProxyServer;
     private final Player player;
@@ -98,12 +100,12 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void sendData(String channel, byte[] data) {
-
+        this.player.sendPluginMessage(MinecraftChannelIdentifier.forDefaultNamespace(channel), data);
     }
 
     @Override
     public PendingConnection getPendingConnection() {
-        return null;
+        return new BridgePendingConnection(this.player, this.velocityProxyServer);
     }
 
     @Override
@@ -161,7 +163,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public SkinConfiguration getSkinParts() {
-        return null;
+        return new BridgeSkinConfiguration(this.player.getPlayerSettings().getSkinParts());
     }
 
     @Override
