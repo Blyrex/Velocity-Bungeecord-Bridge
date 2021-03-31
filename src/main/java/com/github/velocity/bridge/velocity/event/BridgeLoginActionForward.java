@@ -15,6 +15,7 @@ import net.md_5.bungee.api.event.PreLoginEvent;
 
 @RequiredArgsConstructor
 public final class BridgeLoginActionForward {
+
     private final ProxyServer proxyServer;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
 

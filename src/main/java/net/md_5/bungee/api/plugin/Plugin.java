@@ -1,6 +1,5 @@
 package net.md_5.bungee.api.plugin;
 
-import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
@@ -22,24 +21,6 @@ public class Plugin {
     private File file;
     @Getter
     private Logger logger;
-
-    public Plugin()
-    {
-     /*   ClassLoader classLoader = getClass().getClassLoader();
-        Preconditions.checkState( classLoader instanceof PluginClassloader, "Plugin requires " + PluginClassloader.class.getName() );
-
-        ( (PluginClassloader) classLoader ).init( this );*/
-
-    }
-
-    protected Plugin(ProxyServer proxy, PluginDescription description)
-    {
-        ClassLoader classLoader = getClass().getClassLoader();
-        Preconditions.checkState( !( classLoader instanceof PluginClassloader ), "Cannot use initialization constructor at runtime" );
-
-        // init( proxy, description );
-    }
-
 
     public void onLoad()
     {

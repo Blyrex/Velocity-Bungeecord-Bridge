@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public final class BridgeChatActionForward {
+
     private final ProxyServer proxyServer;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
 
