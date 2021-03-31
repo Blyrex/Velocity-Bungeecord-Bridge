@@ -13,22 +13,25 @@ import java.util.logging.Level;
 public final class VelocityClassLoaderInjector {
     private final BungeeVelocityBridgePlugin plugin;
     private Object velocityPluginClassLoader;
+    private Class<?> velocityPluginClassLoaderClass;
     private Method addPathMethod;
     private Method loadClassMethod;
 
     public VelocityClassLoaderInjector(BungeeVelocityBridgePlugin plugin) {
         this.plugin = plugin;
         try {
+            this.velocityPluginClassLoaderClass = Class.forName("com.velocitypowered.proxy.plugin");
             this.velocityPluginClassLoader
-                    = Class.forName("com.velocitypowered.proxy.plugin")
+                    = this.velocityPluginClassLoaderClass
                     .getDeclaredConstructor()
                     .newInstance();
-            this.addPathMethod = this.velocityPluginClassLoader
-                    .getClass()
-                    .getDeclaredMethod("addPath");
-            this.loadClassMethod = this.velocityPluginClassLoader
-                    .getClass()
+            this.addPathMethod = this.velocityPluginClassLoaderClass
+                    .getDeclaredMethod("addPath", Path.class);
+            this.loadClassMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("loadClass", String.class, Boolean.class);
+            this.velocityPluginClassLoaderClass
+                    .getDeclaredMethod("addToClassloaders")
+                    .invoke(this.velocityPluginClassLoader);
         } catch (ClassNotFoundException exception) {
             this.plugin.getLogger().log(Level.WARNING, "Cannot find Velocity PluginClassLoader. Please make sure to use the newest Velocity Version!");
             exception.printStackTrace();
