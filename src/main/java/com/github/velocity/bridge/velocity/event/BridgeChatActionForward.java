@@ -28,7 +28,7 @@ public final class BridgeChatActionForward {
         }
     }
 
-    @Subscribe(order = PostOrder.NORMAL)
+    @Subscribe(order = PostOrder.LATE)
     public void playerCommandExecution(PlayerChatEvent event) {
         if (event.getMessage().charAt(0) != '/' || !event.getResult().isAllowed()) {
             return;

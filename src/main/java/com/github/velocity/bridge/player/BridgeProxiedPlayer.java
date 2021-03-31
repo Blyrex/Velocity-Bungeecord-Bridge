@@ -210,7 +210,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public Scoreboard getScoreboard() {
-        return null;
+        throw new UnsupportedOperationException("This feature is not supported by velocity, so the BungeeVelocityBridge cannot support it either");
     }
 
     @Override
@@ -306,7 +306,7 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public Unsafe unsafe() {
-        return null;
+        throw new UnsupportedOperationException("This feature is not supported by velocity, so the BungeeVelocityBridge cannot support it either");
     }
 
     public static ProxiedPlayer fromVelocity(ProxyServer velocityProxyServer, Player player) {

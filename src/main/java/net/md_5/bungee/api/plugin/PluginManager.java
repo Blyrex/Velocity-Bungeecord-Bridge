@@ -264,23 +264,6 @@ public class PluginManager {
 
         // do actual loading
         if (status) {
-           /* try {
-                URLClassLoader loader = new PluginClassloader(proxy, plugin, new URL[]
-                        {
-                                plugin.getFile().toURI().toURL()
-                        });
-                Class<?> main = loader.loadClass(plugin.getMain());
-                Plugin clazz = (Plugin) main.getDeclaredConstructor().newInstance();
-
-                plugins.put(plugin.getName(), clazz);
-                clazz.onLoad();k
-                ProxyServer.getInstance().getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
-                        {
-                                plugin.getName(), plugin.getVersion(), plugin.getAuthor()
-                        });
-            } catch (Throwable t) {
-                proxy.getLogger().log(Level.WARNING, "Error enabling plugin " + plugin.getName(), t);
-            }*/
 
             try {
                 Path path = plugin.getFile().toPath();
