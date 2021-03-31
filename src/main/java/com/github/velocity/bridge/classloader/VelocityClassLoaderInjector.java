@@ -8,7 +8,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 @Getter
@@ -28,7 +27,6 @@ public final class VelocityClassLoaderInjector {
             this.addPathMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addPath", Path.class);
             this.addPathMethod.setAccessible(true);
-            System.out.println(Arrays.toString(this.velocityPluginClassLoaderClass.getDeclaredMethods()));
             this.loadClassMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("loadClass", String.class, boolean.class);
             this.loadClassMethod.setAccessible(true);
