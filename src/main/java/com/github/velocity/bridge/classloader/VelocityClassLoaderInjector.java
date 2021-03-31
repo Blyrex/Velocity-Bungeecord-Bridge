@@ -27,9 +27,11 @@ public final class VelocityClassLoaderInjector {
                     = this.velocityPluginClassLoaderClass.getConstructor(URL[].class).newInstance((Object) new URL[0]);
             this.addPathMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addPath", Path.class);
-            System.out.println(Arrays.toString(this.velocityPluginClassLoaderClass.getMethods()));
+            this.addPathMethod.setAccessible(true);
+            System.out.println(Arrays.toString(this.velocityPluginClassLoaderClass.getDeclaredMethods()));
             this.loadClassMethod = this.velocityPluginClassLoaderClass
-                    .getDeclaredMethod("loadClass", String.class, Boolean.class);
+                    .getDeclaredMethod("loadClass", String.class, boolean.class);
+            this.loadClassMethod.setAccessible(true);
             this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addToClassloaders")
                     .invoke(this.velocityPluginClassLoader);

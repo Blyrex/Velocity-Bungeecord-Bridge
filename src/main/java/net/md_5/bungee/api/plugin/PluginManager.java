@@ -273,7 +273,7 @@ public class PluginManager {
                 Plugin clazz = (Plugin) main.getDeclaredConstructor().newInstance();
 
                 plugins.put(plugin.getName(), clazz);
-                clazz.onLoad();
+                clazz.onLoad();k
                 ProxyServer.getInstance().getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
                         {
                                 plugin.getName(), plugin.getVersion(), plugin.getAuthor()
@@ -288,6 +288,8 @@ public class PluginManager {
 
                 Class<?> main = this.velocityClassLoaderInjector.loadClass(plugin.getMain());
                 Plugin clazz = (Plugin) main.getDeclaredConstructor().newInstance();
+
+                clazz.init(this.proxy, plugin);
 
                 plugins.put(plugin.getName(), clazz);
                 clazz.onLoad();
