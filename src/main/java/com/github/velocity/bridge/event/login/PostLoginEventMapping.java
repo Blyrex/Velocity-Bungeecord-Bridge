@@ -1,8 +1,8 @@
-package com.github.velocity.bridge.velocity.event.login;
+package com.github.velocity.bridge.event.login;
 
 import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
-import com.github.velocity.bridge.velocity.event.EventMapping;
+import com.github.velocity.bridge.event.EventMapping;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.connection.LoginEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;

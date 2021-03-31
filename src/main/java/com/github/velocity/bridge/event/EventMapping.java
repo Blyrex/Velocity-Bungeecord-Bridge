@@ -1,4 +1,4 @@
-package com.github.velocity.bridge.velocity.event;
+package com.github.velocity.bridge.event;
 
 import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
 import com.velocitypowered.api.event.PostOrder;
