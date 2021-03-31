@@ -9,17 +9,17 @@ import net.md_5.bungee.api.event.ChatEvent;
 
 public final class ChatEventMapping extends EventMapping<PlayerChatEvent, ChatEvent> {
     public ChatEventMapping(BungeeVelocityBridgePlugin plugin) {
-        super(plugin, PlayerChatEvent.class, ChatEvent.class, PostOrder.NORMAL);
+        super(plugin, PlayerChatEvent.class, ChatEvent.class, PostOrder.EARLY);
     }
 
     @Override
-    public ChatEvent prepare(PlayerChatEvent event) {
+    public ChatEvent preparation(PlayerChatEvent event) {
         ProxiedPlayer proxiedPlayer = BridgeProxiedPlayer.fromVelocity(super.plugin.getServer(), event.getPlayer());
         return new ChatEvent(proxiedPlayer, proxiedPlayer, event.getMessage());
     }
 
     @Override
-    public void post(PlayerChatEvent event, ChatEvent chatEvent) {
+    public void done(PlayerChatEvent event, ChatEvent chatEvent) {
         if (chatEvent.isCancelled()) {
             event.setResult(PlayerChatEvent.ChatResult.denied());
         }

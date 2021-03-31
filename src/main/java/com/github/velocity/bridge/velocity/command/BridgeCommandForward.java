@@ -1,4 +1,4 @@
-package com.github.velocity.bridge.velocity.event;
+package com.github.velocity.bridge.velocity.command;
 
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.velocitypowered.api.event.PostOrder;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public final class BridgeChatActionForward {
+public final class BridgeCommandForward {
     private final ProxyServer proxyServer;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
 

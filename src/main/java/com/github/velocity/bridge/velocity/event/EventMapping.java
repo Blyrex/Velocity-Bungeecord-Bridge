@@ -18,14 +18,18 @@ public abstract class EventMapping<S, T extends Event> {
         this.targetEventClass = targetEventClass;
         this.postOrder = postOrder;
         this.plugin.getServer().getEventManager().register(this.plugin, this.sourceEventClass, this.postOrder, event -> {
-            T target = this.prepare(event);
-            this.plugin.getBungeeProxyServer().getPluginManager()
-                    .callEvent(target);
-            this.post(event, target);
+            T target = this.preparation(event);
+            if (target != null) {
+                this.plugin.getBungeeProxyServer().getPluginManager()
+                        .callEvent(target);
+                this.done(event, target);
+            }
         });
     }
 
-    public abstract T prepare(S s);
+    protected abstract T preparation(S s);
 
-    public abstract void post(S s, T t);
+    protected void done(S s, T t) {
+
+    }
 }
