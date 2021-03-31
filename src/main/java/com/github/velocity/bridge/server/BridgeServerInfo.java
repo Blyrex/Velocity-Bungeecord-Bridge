@@ -18,7 +18,7 @@ import java.net.SocketAddress;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public final class BridgeServerInfo implements ServerInfo {
+public class BridgeServerInfo implements ServerInfo {
     public static String EMPTY_STRING = "";
 
     private final ProxyServer proxyServer;

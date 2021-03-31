@@ -1,8 +1,10 @@
 package com.github.velocity.bridge.player;
 
 import com.github.velocity.bridge.connection.BridgePendingConnection;
+import com.github.velocity.bridge.server.BridgeServer;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
@@ -101,7 +103,11 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public Server getServer() {
-        return null;
+        ServerConnection serverConnection = this.player.getCurrentServer().orElse(null);
+        if(serverConnection == null) {
+            return null;
+        }
+        return new BridgeServer(this.velocityProxyServer, serverConnection.getServer());
     }
 
     @Override
