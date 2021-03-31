@@ -1,6 +1,7 @@
-package com.github.velocity.bridge.event;
+package com.github.velocity.bridge.event.mapping;
 
 import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
+import com.github.velocity.bridge.event.EventMapping;
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.player.PlayerChatEvent;

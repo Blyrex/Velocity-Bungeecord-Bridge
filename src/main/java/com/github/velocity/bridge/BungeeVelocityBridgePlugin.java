@@ -1,6 +1,10 @@
 package com.github.velocity.bridge;
 
-import com.github.velocity.bridge.event.ChatEventMapping;
+import com.github.velocity.bridge.event.mapping.ChatEventMapping;
+import com.github.velocity.bridge.event.mapping.PluginMessageEventMapping;
+import com.github.velocity.bridge.event.mapping.login.LoginEventMapping;
+import com.github.velocity.bridge.event.mapping.login.PostLoginEventMapping;
+import com.github.velocity.bridge.event.mapping.login.PreLoginEventMapping;
 import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -42,6 +46,12 @@ public class BungeeVelocityBridgePlugin {
 
     private void loadEventMappings() {
         new ChatEventMapping(this);
+
+        new PluginMessageEventMapping(this);
+
+        new PreLoginEventMapping(this);
+        new LoginEventMapping(this);
+        new PostLoginEventMapping(this);
     }
 
     private void forwardRegistration() {

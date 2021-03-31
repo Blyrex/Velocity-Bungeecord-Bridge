@@ -1,4 +1,4 @@
-package com.github.velocity.bridge.event.login;
+package com.github.velocity.bridge.event.mapping;
 
 import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
 import com.github.velocity.bridge.event.EventMapping;
