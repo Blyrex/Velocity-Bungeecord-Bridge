@@ -4,6 +4,7 @@ import com.github.velocity.bridge.connection.BridgePendingConnection;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -21,6 +22,7 @@ import net.md_5.bungee.api.score.Scoreboard;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
@@ -65,27 +67,36 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void connect(ServerInfo target) {
-
+        this.velocityProxyServer.getServer(target.getName())
+                .ifPresent(
+                        registeredServer -> this.player.createConnectionRequest(registeredServer).fireAndForget()
+                );
     }
 
     @Override
     public void connect(ServerInfo target, ServerConnectEvent.Reason reason) {
-
+        this.connect(target);
     }
 
     @Override
     public void connect(ServerInfo target, Callback<Boolean> callback) {
+        RegisteredServer server = this.velocityProxyServer.getServer(target.getName()).orElse(null);
+        if(server == null) {
+            return;
+        }
+        CompletableFuture<Boolean> resultCompletableFuture = this.player.createConnectionRequest(server).connectWithIndication();
+        resultCompletableFuture.thenAccept(result -> callback.done(result, null));
 
     }
 
     @Override
     public void connect(ServerInfo target, Callback<Boolean> callback, ServerConnectEvent.Reason reason) {
-
+        this.connect(target, callback);
     }
 
     @Override
     public void connect(ServerConnectRequest request) {
-
+        this.connect(request.getTarget());
     }
 
     @Override
@@ -120,7 +131,6 @@ public final class BridgeProxiedPlayer implements ProxiedPlayer {
 
     @Override
     public void setReconnectServer(ServerInfo server) {
-
     }
 
     @Override
