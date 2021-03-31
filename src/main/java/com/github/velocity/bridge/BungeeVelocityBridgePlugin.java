@@ -2,13 +2,18 @@ package com.github.velocity.bridge;
 
 import com.github.velocity.bridge.velocity.event.BridgeChatActionForward;
 import com.github.velocity.bridge.velocity.event.BridgeLoginActionForward;
+import com.github.velocity.bridge.velocity.event.ChatEventMapping;
+import com.github.velocity.bridge.velocity.event.EventMapping;
 import com.google.inject.Inject;
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
+import net.md_5.bungee.api.event.ChatEvent;
 
 import java.nio.file.Path;
 import java.util.logging.Logger;
@@ -37,6 +42,10 @@ public class BungeeVelocityBridgePlugin {
     public void proxyInitialisation(ProxyInitializeEvent event) {
         this.bungeeProxyServer = new ProxyServerBridge(this);
         this.forwardRegistration();
+    }
+
+    private void loadEventMappings() {
+        new ChatEventMapping(this);
     }
 
     private void forwardRegistration() {
