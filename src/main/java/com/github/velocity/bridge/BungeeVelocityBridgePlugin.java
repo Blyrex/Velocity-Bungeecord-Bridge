@@ -1,6 +1,7 @@
 package com.github.velocity.bridge;
 
-import com.github.velocity.bridge.velocity.BridgeEventListener;
+import com.github.velocity.bridge.velocity.event.BridgeChatActionForward;
+import com.github.velocity.bridge.velocity.event.BridgeLoginActionForward;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -35,6 +36,13 @@ public class BungeeVelocityBridgePlugin {
     @Subscribe
     public void proxyInitialisation(ProxyInitializeEvent event) {
         this.bungeeProxyServer = new ProxyServerBridge(this);
-        this.server.getEventManager().register(this, new BridgeEventListener(this.bungeeProxyServer, this.server));
+        this.forwardRegistration();
+    }
+
+    private void forwardRegistration() {
+        this.server.getEventManager()
+                .register(this, new BridgeLoginActionForward(this.bungeeProxyServer, this.server));
+        this.server.getEventManager()
+                .register(this, new BridgeChatActionForward(this.bungeeProxyServer, this.server));
     }
 }
