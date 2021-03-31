@@ -10,6 +10,7 @@ import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.connection.PendingConnection;
 
 public final class LoginEventMapping extends EventMapping<LoginEvent, net.md_5.bungee.api.event.LoginEvent> {
+
     public LoginEventMapping(BungeeVelocityBridgePlugin plugin) {
         super(plugin, LoginEvent.class, net.md_5.bungee.api.event.LoginEvent.class, PostOrder.NORMAL);
     }

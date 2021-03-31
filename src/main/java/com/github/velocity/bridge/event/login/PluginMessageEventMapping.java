@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 
 public final class PluginMessageEventMapping extends EventMapping<PluginMessageEvent, net.md_5.bungee.api.event.PluginMessageEvent> {
+
     public PluginMessageEventMapping(BungeeVelocityBridgePlugin plugin) {
         super(plugin, PluginMessageEvent.class, net.md_5.bungee.api.event.PluginMessageEvent.class, PostOrder.NORMAL);
     }

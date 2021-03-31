@@ -14,6 +14,7 @@ import java.util.Collections;
 @Getter
 @RequiredArgsConstructor
 public final class BridgeConsoleSender implements CommandSender {
+
     private final ProxyServer velocityProxyServer;
 
     @Override

@@ -48,9 +48,9 @@ public class PluginManager {
         PropertyUtils propertyUtils = yamlConstructor.getPropertyUtils();
         propertyUtils.setSkipMissingProperties(true);
         yamlConstructor.setPropertyUtils(propertyUtils);
-        yaml = new Yaml(yamlConstructor);
+        this.yaml = new Yaml(yamlConstructor);
 
-        eventBus = new EventBus(proxy.getLogger());
+        this.eventBus = new EventBus(proxy.getLogger());
     }
 
     /**
@@ -60,11 +60,11 @@ public class PluginManager {
      * @param command the command to register
      */
     public void registerCommand(Plugin plugin, Command command) {
-        commandMap.put(command.getName().toLowerCase(Locale.ROOT), command);
+        this.commandMap.put(command.getName().toLowerCase(Locale.ROOT), command);
         for (String alias : command.getAliases()) {
-            commandMap.put(alias.toLowerCase(Locale.ROOT), command);
+            this.commandMap.put(alias.toLowerCase(Locale.ROOT), command);
         }
-        commandsByPlugin.put(plugin, command);
+        this.commandsByPlugin.put(plugin, command);
     }
 
     /**
@@ -73,8 +73,8 @@ public class PluginManager {
      * @param command the command to unregister
      */
     public void unregisterCommand(Command command) {
-        while (commandMap.values().remove(command)) ;
-        commandsByPlugin.values().remove(command);
+        while (this.commandMap.values().remove(command)) ;
+        this.commandsByPlugin.values().remove(command);
     }
 
     /**
@@ -83,9 +83,9 @@ public class PluginManager {
      * @param plugin the plugin to register the commands of
      */
     public void unregisterCommands(Plugin plugin) {
-        for (Iterator<Command> it = commandsByPlugin.get(plugin).iterator(); it.hasNext(); ) {
+        for (Iterator<Command> it = this.commandsByPlugin.get(plugin).iterator(); it.hasNext(); ) {
             Command command = it.next();
-            while (commandMap.values().remove(command)) ;
+            while (this.commandMap.values().remove(command)) ;
             it.remove();
         }
     }
@@ -98,7 +98,7 @@ public class PluginManager {
             return null;
         }
 
-        return commandMap.get(commandLower);
+        return this.commandMap.get(commandLower);
     }
 
     /**
@@ -196,12 +196,12 @@ public class PluginManager {
                 ProxyServer.getInstance().getLogger().log(Level.WARNING, "Failed to enable {0}", entry.getKey());
             }
         }
-        toLoad.clear();
-        toLoad = null;
+        this.toLoad.clear();
+        this.toLoad = null;
     }
 
     public void enablePlugins() {
-        for (Plugin plugin : plugins.values()) {
+        for (Plugin plugin : this.plugins.values()) {
             try {
                 plugin.onEnable();
                 ProxyServer.getInstance().getLogger().log(Level.INFO, "Enabled plugin {0} version {1} by {2}", new Object[]
@@ -274,14 +274,14 @@ public class PluginManager {
 
                 clazz.init(this.proxy, plugin);
 
-                plugins.put(plugin.getName(), clazz);
+                this.plugins.put(plugin.getName(), clazz);
                 clazz.onLoad();
                 ProxyServer.getInstance().getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
                         {
                                 plugin.getName(), plugin.getVersion(), plugin.getAuthor()
                         });
-            }catch (Exception exception) {
-                proxy.getLogger().log(Level.WARNING, "Error enabling plugin " + plugin.getName(), exception);
+            } catch (Exception exception) {
+                this.proxy.getLogger().log(Level.WARNING, "Error enabling plugin " + plugin.getName(), exception);
             }
         }
 
@@ -313,7 +313,7 @@ public class PluginManager {
                         Preconditions.checkNotNull(desc.getMain(), "Plugin from %s has no main", file);
 
                         desc.setFile(file);
-                        toLoad.put(desc.getName(), desc);
+                        this.toLoad.put(desc.getName(), desc);
                     }
                 } catch (Exception ex) {
                     ProxyServer.getInstance().getLogger().log(Level.WARNING, "Could not load plugin from file " + file, ex);
@@ -355,8 +355,8 @@ public class PluginManager {
      * @param listener the listener to register events for
      */
     public void registerListener(Plugin plugin, Listener listener) {
-        eventBus.register(listener);
-        listenersByPlugin.put(plugin, listener);
+        this.eventBus.register(listener);
+        this.listenersByPlugin.put(plugin, listener);
     }
 
     /**
@@ -365,8 +365,8 @@ public class PluginManager {
      * @param listener the listener to unregister
      */
     public void unregisterListener(Listener listener) {
-        eventBus.unregister(listener);
-        listenersByPlugin.values().remove(listener);
+        this.eventBus.unregister(listener);
+        this.listenersByPlugin.values().remove(listener);
     }
 
     /**
@@ -375,8 +375,8 @@ public class PluginManager {
      * @param plugin target plugin
      */
     public void unregisterListeners(Plugin plugin) {
-        for (Iterator<Listener> it = listenersByPlugin.get(plugin).iterator(); it.hasNext(); ) {
-            eventBus.unregister(it.next());
+        for (Iterator<Listener> it = this.listenersByPlugin.get(plugin).iterator(); it.hasNext(); ) {
+            this.eventBus.unregister(it.next());
             it.remove();
         }
     }
@@ -387,6 +387,6 @@ public class PluginManager {
      * @return commands
      */
     public Collection<Map.Entry<String, Command>> getCommands() {
-        return Collections.unmodifiableCollection(commandMap.entrySet());
+        return Collections.unmodifiableCollection(this.commandMap.entrySet());
     }
 }

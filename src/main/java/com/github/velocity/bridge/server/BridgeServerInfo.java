@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class BridgeServerInfo implements ServerInfo {
+
     public static String EMPTY_STRING = "";
 
     private final ProxyServer proxyServer;

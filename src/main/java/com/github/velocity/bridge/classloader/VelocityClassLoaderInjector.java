@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 @Getter
 public final class VelocityClassLoaderInjector {
+
     private final BungeeVelocityBridgePlugin plugin;
     private Object velocityPluginClassLoader;
     private Class<?> velocityPluginClassLoaderClass;

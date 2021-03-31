@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 
 @Data
 public final class BridgeScheduledTask implements ScheduledTask {
+
     private final int id;
     private final Plugin owner;
     private final Runnable task;

@@ -8,6 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 
 public final class ChatEventMapping extends EventMapping<PlayerChatEvent, ChatEvent> {
+
     public ChatEventMapping(BungeeVelocityBridgePlugin plugin) {
         super(plugin, PlayerChatEvent.class, ChatEvent.class, PostOrder.EARLY);
     }

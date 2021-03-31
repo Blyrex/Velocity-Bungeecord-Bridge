@@ -11,6 +11,7 @@ import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.PreLoginEvent;
 
 public final class PreLoginEventMapping extends EventMapping<LoginEvent, PreLoginEvent> {
+
     public PreLoginEventMapping(BungeeVelocityBridgePlugin plugin) {
         super(plugin, LoginEvent.class, PreLoginEvent.class, PostOrder.FIRST);
     }

@@ -1,7 +1,7 @@
 package com.github.velocity.bridge;
 
-import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.github.velocity.bridge.event.ChatEventMapping;
+import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -37,6 +37,7 @@ public class BungeeVelocityBridgePlugin {
     public void proxyInitialisation(ProxyInitializeEvent event) {
         this.bungeeProxyServer = new ProxyServerBridge(this);
         this.forwardRegistration();
+        this.loadEventMappings();
     }
 
     private void loadEventMappings() {

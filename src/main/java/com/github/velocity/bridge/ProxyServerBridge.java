@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public final class ProxyServerBridge extends ProxyServer {
+
     private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
     private final CommandSender consoleCommandSender;

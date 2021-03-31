@@ -26,6 +26,7 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 @Setter
 public final class BridgeProxiedPlayer extends BridgePendingConnection implements ProxiedPlayer {
+
     private static final BaseComponent[] EMPTY_COMPONENT = new BaseComponent[]{new TextComponent()};
 
     private final ProxyServer velocityProxyServer;

@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Getter
 @RequiredArgsConstructor
 public class BridgeTaskScheduler implements TaskScheduler {
+
     private final ProxyServer velocityProxyServer;
     private final Map<Integer, ScheduledTask> scheduledTaskMap = new HashMap<>();
     private final ExecutorService executorService = Executors.newCachedThreadPool();

@@ -7,6 +7,7 @@ import net.md_5.bungee.api.plugin.Event;
 
 @Getter
 public abstract class EventMapping<S, T extends Event> {
+
     protected final BungeeVelocityBridgePlugin plugin;
     protected final Class<S> sourceEventClass;
     protected final Class<T> targetEventClass;
