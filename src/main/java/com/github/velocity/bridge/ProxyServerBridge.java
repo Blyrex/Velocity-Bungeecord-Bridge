@@ -17,13 +17,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ConfigurationAdapter;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.PluginDescription;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
 import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.event.EventBus;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -52,7 +48,7 @@ public final class ProxyServerBridge extends ProxyServer {
         this.consoleCommandSender = new BridgeConsoleSender(this.velocityProxyServer);
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
-        this.pluginManager = new PluginManager(this, new Yaml(new CustomClassLoaderConstructor(PluginDescription.class.getClassLoader())), new EventBus());
+        this.pluginManager = new PluginManager(this);
         this.loadPlugins();
     }
 
