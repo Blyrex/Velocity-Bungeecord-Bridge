@@ -23,6 +23,7 @@ import net.md_5.bungee.api.scheduler.TaskScheduler;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventBus;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -51,12 +52,11 @@ public final class ProxyServerBridge extends ProxyServer {
         this.consoleCommandSender = new BridgeConsoleSender(this.velocityProxyServer);
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
-        this.pluginManager = new PluginManager(this, new Yaml(), new EventBus());
+        this.pluginManager = new PluginManager(this, new Yaml(new CustomClassLoaderConstructor(PluginDescription.class.getClassLoader())), new EventBus());
         this.loadPlugins();
     }
 
     private void loadPlugins() {
-        System.out.println(PluginDescription.class.getName());
         this.pluginManager.detectPlugins(this.pluginsFolder.toFile());
         this.pluginManager.loadPlugins();
         this.pluginManager.enablePlugins();

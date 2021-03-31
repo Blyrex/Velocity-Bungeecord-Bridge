@@ -35,6 +35,6 @@ public class BungeeVelocityBridgePlugin {
     @Subscribe
     public void proxyInitialisation(ProxyInitializeEvent event) {
         this.bungeeProxyServer = new ProxyServerBridge(this);
-        this.server.getEventManager().register(this, new BridgeEventListener(bungeeProxyServer, this.server));
+        this.server.getEventManager().register(this, new BridgeEventListener(this.bungeeProxyServer, this.server));
     }
 }
