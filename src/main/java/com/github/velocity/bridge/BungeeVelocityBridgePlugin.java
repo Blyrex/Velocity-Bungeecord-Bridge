@@ -39,7 +39,7 @@ public class BungeeVelocityBridgePlugin {
 
     @Subscribe
     public void proxyInitialisation(ProxyInitializeEvent event) {
-        this.bungeeProxyServer = new ProxyServerBridge(this);
+        this.bungeeProxyServer = new BridgeProxyServer(this);
         this.forwardRegistration();
         this.loadEventMappings();
     }

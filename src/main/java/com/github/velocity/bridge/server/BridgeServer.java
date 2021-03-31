@@ -1,5 +1,6 @@
 package com.github.velocity.bridge.server;
 
+import com.github.velocity.bridge.BridgeProxyServer;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -37,6 +38,6 @@ public class BridgeServer extends BridgeServerInfo implements Server {
 
     @Override
     public Unsafe unsafe() {
-        throw new UnsupportedOperationException("This feature is not supported by velocity, so the BungeeVelocityBridge cannot support it either");
+        throw new UnsupportedOperationException(BridgeProxyServer.NOT_SUPPORTED);
     }
 }
