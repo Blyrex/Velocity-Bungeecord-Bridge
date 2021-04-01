@@ -16,7 +16,7 @@ public final class ChatEventMapping extends EventMapping<PlayerChatEvent, ChatEv
 
     @Override
     public ChatEvent preparation(PlayerChatEvent event) {
-        ProxiedPlayer proxiedPlayer = BridgeProxiedPlayer.fromVelocity(super.plugin.getServer(), event.getPlayer());
+        ProxiedPlayer proxiedPlayer = BridgeProxiedPlayer.fromVelocity(super.proxyServer, event.getPlayer());
         return new ChatEvent(proxiedPlayer, proxiedPlayer, event.getMessage());
     }
 

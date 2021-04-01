@@ -15,6 +15,6 @@ public final class PostLoginEventMapping extends EventMapping<LoginEvent, PostLo
 
     @Override
     protected PostLoginEvent preparation(LoginEvent event) {
-        return new PostLoginEvent(BridgeProxiedPlayer.fromVelocity(super.plugin.getServer(), event.getPlayer()));
+        return new PostLoginEvent(BridgeProxiedPlayer.fromVelocity(super.getProxyServer(), event.getPlayer()));
     }
 }

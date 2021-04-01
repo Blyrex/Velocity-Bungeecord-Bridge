@@ -2,6 +2,7 @@ package com.github.velocity.bridge.event;
 
 import com.github.velocity.bridge.BungeeVelocityBridgePlugin;
 import com.velocitypowered.api.event.PostOrder;
+import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Event;
 
@@ -9,12 +10,14 @@ import net.md_5.bungee.api.plugin.Event;
 public abstract class EventMapping<S, T extends Event> {
 
     protected final BungeeVelocityBridgePlugin plugin;
+    protected final ProxyServer proxyServer;
     protected final Class<S> sourceEventClass;
     protected final Class<T> targetEventClass;
     protected final PostOrder postOrder;
 
     public EventMapping(BungeeVelocityBridgePlugin plugin, Class<S> sourceEventClass, Class<T> targetEventClass, PostOrder postOrder) {
         this.plugin = plugin;
+        this.proxyServer = plugin.getServer();
         this.sourceEventClass = sourceEventClass;
         this.targetEventClass = targetEventClass;
         this.postOrder = postOrder;
