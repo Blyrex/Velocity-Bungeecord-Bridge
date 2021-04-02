@@ -18,7 +18,7 @@ public final class LoginEventMapping extends EventMapping<LoginEvent, net.md_5.b
     @Override
     protected net.md_5.bungee.api.event.LoginEvent preparation(LoginEvent event) {
         Player player = event.getPlayer();
-        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer(), super.getProxyServer());
+        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer(), super.proxyServer);
         return new net.md_5.bungee.api.event.LoginEvent(pendingConnection, (result, error) -> {
             if (result.isCancelled()) {
                 player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));

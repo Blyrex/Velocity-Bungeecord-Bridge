@@ -1,6 +1,7 @@
 package com.github.velocity.bridge;
 
 import com.github.velocity.bridge.event.mapping.ChatEventMapping;
+import com.github.velocity.bridge.event.mapping.PingEventMapping;
 import com.github.velocity.bridge.event.mapping.PluginMessageEventMapping;
 import com.github.velocity.bridge.event.mapping.login.LoginEventMapping;
 import com.github.velocity.bridge.event.mapping.login.PostLoginEventMapping;
@@ -51,6 +52,7 @@ public class BungeeVelocityBridgePlugin {
         new ChatEventMapping(this);
 
         new PluginMessageEventMapping(this);
+        new PingEventMapping(this);
 
         new PreLoginEventMapping(this);
         new LoginEventMapping(this);
