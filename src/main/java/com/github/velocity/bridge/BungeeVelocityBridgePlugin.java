@@ -9,6 +9,7 @@ import com.github.velocity.bridge.event.mapping.login.PreLoginEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerDisconnectEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerHandshakeEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerSettingsEventMapping;
+import com.github.velocity.bridge.event.mapping.server.*;
 import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -61,6 +62,12 @@ public class BungeeVelocityBridgePlugin {
         new PlayerDisconnectEventMapping(this);
         new PlayerHandshakeEventMapping(this);
         new PlayerSettingsEventMapping(this);
+      
+        new ServerConnectedMapping(this);
+        new ServerConnectMapping(this);
+        new ServerDisconnectMapping(this);
+        new ServerSwitchMapping(this);
+        new ServerKickMapping(this);
     }
 
     private void forwardRegistration() {
