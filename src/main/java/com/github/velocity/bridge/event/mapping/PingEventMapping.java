@@ -7,12 +7,15 @@ import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.util.Favicon;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.PendingConnection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bungee.api.event.ProxyPingEvent> {
@@ -54,5 +57,26 @@ public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bung
         });
     }
 
+    @Override
+    protected void done(ProxyPingEvent proxyPingEvent, net.md_5.bungee.api.event.ProxyPingEvent bungeeProxyPingEvent) {
+        ServerPing bungeeResponse = bungeeProxyPingEvent.getResponse();
+        com.velocitypowered.api.proxy.server.ServerPing.Builder serverPingBuilder = com.velocitypowered.api.proxy.server.ServerPing
+                .builder()
+                .description(BungeeComponentSerializer.legacy().deserialize(new BaseComponent[]{bungeeResponse.getDescriptionComponent()}))
+                .maximumPlayers(bungeeResponse.getPlayers().getMax())
+                .onlinePlayers(bungeeResponse.getPlayers().getOnline())
+                .version(new com.velocitypowered.api.proxy.server.ServerPing.Version(
+                        bungeeResponse.getVersion().getProtocol(),
+                        bungeeResponse.getVersion().getName()
+                ));
+        if (bungeeResponse.getFaviconObject() != null) {
+            serverPingBuilder.favicon(new Favicon(bungeeResponse.getFaviconObject().getEncoded()));
+        }
+        com.velocitypowered.api.proxy.server.ServerPing.SamplePlayer[] players = Arrays.stream(bungeeResponse.getPlayers().getSample())
+                .map(playerInfo -> new com.velocitypowered.api.proxy.server.ServerPing.SamplePlayer(playerInfo.getName(), playerInfo.getUniqueId()))
+                .toArray(com.velocitypowered.api.proxy.server.ServerPing.SamplePlayer[]::new);
+        serverPingBuilder.samplePlayers(players);
 
+        proxyPingEvent.setPing(serverPingBuilder.build());
+    }
 }

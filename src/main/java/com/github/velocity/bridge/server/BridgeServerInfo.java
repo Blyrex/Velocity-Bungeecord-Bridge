@@ -88,19 +88,17 @@ public class BridgeServerInfo implements ServerInfo {
 
     @Override
     public void ping(Callback<ServerPing> callback) {
-        this.registeredServer.ping().thenAccept(serverPing -> {
-            callback.done(
-                    new ServerPing(
-                            new ServerPing.Protocol(
-                                    serverPing.getVersion().getName(), serverPing.getVersion().getProtocol()
-                            ),
-                            new ServerPing.Players(1, 1, null),
-                            BungeeComponentSerializer.legacy().serialize(serverPing.getDescriptionComponent())[0],
-                            Favicon.create(serverPing.getFavicon().get().getBase64Url())
-                    ),
-                    null
-            );
-        }).exceptionally(throwable -> {
+        this.registeredServer.ping().thenAccept(serverPing -> callback.done(
+                new ServerPing(
+                        new ServerPing.Protocol(
+                                serverPing.getVersion().getName(), serverPing.getVersion().getProtocol()
+                        ),
+                        new ServerPing.Players(1, 1, null),
+                        BungeeComponentSerializer.legacy().serialize(serverPing.getDescriptionComponent())[0],
+                        Favicon.create(serverPing.getFavicon().get().getBase64Url())
+                ),
+                null
+        )).exceptionally(throwable -> {
             callback.done(null, throwable);
             return null;
         });
