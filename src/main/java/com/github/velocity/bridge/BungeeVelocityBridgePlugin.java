@@ -1,5 +1,6 @@
 package com.github.velocity.bridge;
 
+import com.github.velocity.bridge.console.BridgeCommandForward;
 import com.github.velocity.bridge.event.mapping.ChatEventMapping;
 import com.github.velocity.bridge.event.mapping.PingEventMapping;
 import com.github.velocity.bridge.event.mapping.PluginMessageEventMapping;
@@ -12,7 +13,6 @@ import com.github.velocity.bridge.event.mapping.player.PlayerHandshakeEventMappi
 import com.github.velocity.bridge.event.mapping.player.PlayerSettingsEventMapping;
 import com.github.velocity.bridge.event.mapping.player.TabCompleteEventMapping;
 import com.github.velocity.bridge.event.mapping.server.*;
-import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
