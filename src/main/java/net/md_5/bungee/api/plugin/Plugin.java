@@ -72,17 +72,15 @@ public class Plugin {
         this.logger = new PluginLogger(this);
     }
 
-    //
     private ExecutorService service;
 
     @Deprecated
     public ExecutorService getExecutorService() {
-        if (service == null) {
+        if (this.service == null) {
             String name = (getDescription() == null) ? "unknown" : getDescription().getName();
             service = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat(name + " Pool Thread #%1$d")
                     .setThreadFactory(new GroupedThreadFactory(this, name)).build());
         }
-        return service;
+        return this.service;
     }
-    //
 }
