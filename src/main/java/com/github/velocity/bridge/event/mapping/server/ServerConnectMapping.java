@@ -11,7 +11,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 
-public class ServerConnectMapping extends EventMapping<ServerPreConnectEvent, net.md_5.bungee.api.event.ServerConnectEvent> {
+public class ServerConnectMapping extends EventMapping<ServerPreConnectEvent, ServerConnectEvent> {
 
     private final ProxyServer proxyServer;
 
@@ -22,10 +22,10 @@ public class ServerConnectMapping extends EventMapping<ServerPreConnectEvent, ne
     }
 
     @Override
-    protected net.md_5.bungee.api.event.ServerConnectEvent preparation(ServerPreConnectEvent serverConnectEvent) {
+    protected ServerConnectEvent preparation(ServerPreConnectEvent serverConnectEvent) {
         ProxiedPlayer bridgePlayer = BridgeProxiedPlayer.fromVelocity(this.proxyServer, serverConnectEvent.getPlayer());
         Server bridgeServer = new BridgeServer(this.proxyServer, serverConnectEvent.getResult().getServer().orElse(null));
-        return new net.md_5.bungee.api.event.ServerConnectEvent(bridgePlayer, bridgeServer.getInfo(), ServerConnectEvent.Reason.UNKNOWN, null);
+        return new ServerConnectEvent(bridgePlayer, bridgeServer.getInfo(), ServerConnectEvent.Reason.UNKNOWN, null);
     }
 
     @Override
