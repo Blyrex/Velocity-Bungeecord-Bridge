@@ -28,7 +28,10 @@ import java.net.SocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -250,7 +253,7 @@ public final class BridgeProxyServer extends ProxyServer {
 
     @Override
     public Collection<ProxiedPlayer> matchPlayer(String match) {
-        return Objects.requireNonNull(this.getPlayers()).stream()
+        return this.getPlayers().stream()
                 .filter(proxiedPlayer -> proxiedPlayer.getName().equalsIgnoreCase(match))
                 .collect(Collectors.toList());
     }
