@@ -25,12 +25,15 @@ public final class VelocityClassLoaderInjector {
             this.velocityPluginClassLoaderClass = Class.forName("com.velocitypowered.proxy.plugin.PluginClassLoader");
             this.velocityPluginClassLoader
                     = this.velocityPluginClassLoaderClass.getConstructor(URL[].class).newInstance((Object) new URL[0]);
+
             this.addPathMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addPath", Path.class);
             this.addPathMethod.setAccessible(true);
+
             this.loadClassMethod = this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("loadClass", String.class, boolean.class);
             this.loadClassMethod.setAccessible(true);
+
             this.velocityPluginClassLoaderClass
                     .getDeclaredMethod("addToClassloaders")
                     .invoke(this.velocityPluginClassLoader);

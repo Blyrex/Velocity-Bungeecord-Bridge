@@ -150,8 +150,8 @@ public class PluginManager {
         String[] args = Arrays.copyOfRange(split, 1, split.length);
         try {
             if (tabResults == null) {
-                if (proxy.getConfig().isLogCommands()) {
-                    proxy.getLogger().log(Level.INFO, "{0} executed command: /{1}", new Object[]
+                if (this.proxy.getConfig().isLogCommands()) {
+                    this.proxy.getLogger().log(Level.INFO, "{0} executed command: /{1}", new Object[]
                             {
                                     sender.getName(), commandLine
                             });
@@ -164,7 +164,7 @@ public class PluginManager {
             }
         } catch (Exception ex) {
             sender.sendMessage(ChatColor.RED + "An internal error occurred whilst executing this command, please check the console log for details.");
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Error in dispatching command", ex);
+            this.proxy.getLogger().log(Level.WARNING, "Error in dispatching command", ex);
         }
         return true;
     }
@@ -175,7 +175,7 @@ public class PluginManager {
      * @return the set of loaded plugins
      */
     public Collection<Plugin> getPlugins() {
-        return plugins.values();
+        return this.plugins.values();
     }
 
     /**
@@ -185,14 +185,14 @@ public class PluginManager {
      * @return the retrieved plugin or null if not loaded
      */
     public Plugin getPlugin(String name) {
-        return plugins.get(name);
+        return this.plugins.get(name);
     }
 
     public void loadPlugins() {
         Map<PluginDescription, Boolean> pluginStatuses = new HashMap<>();
-        for (Map.Entry<String, PluginDescription> entry : toLoad.entrySet()) {
+        for (Map.Entry<String, PluginDescription> entry : this.toLoad.entrySet()) {
             PluginDescription plugin = entry.getValue();
-            if (!enablePlugin(pluginStatuses, new Stack<PluginDescription>(), plugin)) {
+            if (!this.enablePlugin(pluginStatuses, new Stack<>(), plugin)) {
                 ProxyServer.getInstance().getLogger().log(Level.WARNING, "Failed to enable {0}", entry.getKey());
             }
         }
@@ -204,12 +204,12 @@ public class PluginManager {
         for (Plugin plugin : this.plugins.values()) {
             try {
                 plugin.onEnable();
-                ProxyServer.getInstance().getLogger().log(Level.INFO, "Enabled plugin {0} version {1} by {2}", new Object[]
+                this.proxy.getLogger().log(Level.INFO, "Enabled plugin {0} version {1} by {2}", new Object[]
                         {
                                 plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin.getDescription().getAuthor()
                         });
             } catch (Throwable t) {
-                ProxyServer.getInstance().getLogger().log(Level.WARNING, "Exception encountered when loading plugin: " + plugin.getDescription().getName(), t);
+                this.proxy.getLogger().log(Level.WARNING, "Exception encountered when loading plugin: " + plugin.getDescription().getName(), t);
             }
         }
     }
@@ -229,7 +229,7 @@ public class PluginManager {
 
         // try to load dependencies first
         for (String dependName : dependencies) {
-            PluginDescription depend = toLoad.get(dependName);
+            PluginDescription depend = this.toLoad.get(dependName);
             Boolean dependStatus = (depend != null) ? pluginStatuses.get(depend) : Boolean.FALSE;
 
             if (dependStatus == null) {
@@ -239,7 +239,7 @@ public class PluginManager {
                         dependencyGraph.append(element.getName()).append(" -> ");
                     }
                     dependencyGraph.append(plugin.getName()).append(" -> ").append(dependName);
-                    ProxyServer.getInstance().getLogger().log(Level.WARNING, "Circular dependency detected: {0}", dependencyGraph);
+                    this.proxy.getLogger().log(Level.WARNING, "Circular dependency detected: {0}", dependencyGraph);
                     status = false;
                 } else {
                     dependStack.push(plugin);
@@ -276,7 +276,7 @@ public class PluginManager {
 
                 this.plugins.put(plugin.getName(), clazz);
                 clazz.onLoad();
-                ProxyServer.getInstance().getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
+                this.proxy.getLogger().log(Level.INFO, "Loaded plugin {0} version {1} by {2}", new Object[]
                         {
                                 plugin.getName(), plugin.getVersion(), plugin.getAuthor()
                         });
@@ -334,7 +334,7 @@ public class PluginManager {
         Preconditions.checkNotNull(event, "event");
 
         long start = System.nanoTime();
-        eventBus.post(event);
+        this.eventBus.post(event);
         event.postCall();
 
         long elapsed = System.nanoTime() - start;

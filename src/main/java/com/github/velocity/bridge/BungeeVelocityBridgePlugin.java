@@ -28,7 +28,8 @@ import java.util.logging.Logger;
         id = "bungeevelocitybridge",
         name = "BungeeVelocityBridge",
         version = "1.0.0-SNAPSHOT",
-        authors = {"Blyrex", "0utplay"}
+        authors = {"Blyrex", "0utplay"},
+        description = "The BungeeVelocityBridge is designed to support BungeeCord Plugins on a Velocity Proxy."
 )
 @Getter
 public class BungeeVelocityBridgePlugin {

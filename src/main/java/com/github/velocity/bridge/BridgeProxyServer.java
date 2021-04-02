@@ -10,8 +10,8 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.identity.Identity;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -165,7 +165,7 @@ public final class BridgeProxyServer extends ProxyServer {
 
     @Override
     public void stop(String reason) {
-        this.velocityProxyServer.shutdown(Component.text(reason));
+        this.velocityProxyServer.shutdown(LegacyComponentSerializer.legacySection().deserialize(reason));
     }
 
     @Override
