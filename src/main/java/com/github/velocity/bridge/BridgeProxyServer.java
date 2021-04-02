@@ -6,6 +6,7 @@ import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.github.velocity.bridge.scheduler.BridgeTaskScheduler;
 import com.github.velocity.bridge.server.BridgeServerInfo;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.identity.Identity;
@@ -130,12 +131,16 @@ public final class BridgeProxyServer extends ProxyServer {
 
     @Override
     public ServerInfo getServerInfo(String name) {
-        return this.getServers().get(name);
+        RegisteredServer registeredServer = this.velocityProxyServer.getServer(name).orElse(null);
+        if (registeredServer == null) {
+            return null;
+        }
+        return new BridgeServerInfo(this.velocityProxyServer, registeredServer);
     }
 
     @Override
     public ConfigurationAdapter getConfigurationAdapter() {
-        return null;
+        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
     @Override
@@ -145,7 +150,7 @@ public final class BridgeProxyServer extends ProxyServer {
 
     @Override
     public ReconnectHandler getReconnectHandler() {
-        return null;
+        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
     @Override
