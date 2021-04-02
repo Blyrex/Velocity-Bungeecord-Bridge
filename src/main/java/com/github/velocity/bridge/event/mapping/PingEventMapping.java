@@ -6,7 +6,6 @@ import com.github.velocity.bridge.event.EventMapping;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.util.Favicon;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ServerPing;
@@ -18,12 +17,8 @@ import java.util.List;
 
 public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bungee.api.event.ProxyPingEvent> {
 
-    private final ProxyServer proxyServer;
-
     public PingEventMapping(BungeeVelocityBridgePlugin plugin) {
         super(plugin, ProxyPingEvent.class, net.md_5.bungee.api.event.ProxyPingEvent.class, PostOrder.FIRST);
-
-        this.proxyServer = plugin.getServer();
     }
 
     @Override
@@ -31,7 +26,7 @@ public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bung
         com.velocitypowered.api.proxy.server.ServerPing.Version velocityProtocol = proxyPingEvent.getPing().getVersion();
         ServerPing.Protocol protocol = new ServerPing.Protocol(velocityProtocol.getName(), velocityProtocol.getProtocol());
 
-        List<Player> allPlayers = new ArrayList<>(this.proxyServer.getAllPlayers());
+        List<Player> allPlayers = new ArrayList<>(super.proxyServer.getAllPlayers());
         ServerPing.PlayerInfo[] playerInfos = new ServerPing.PlayerInfo[allPlayers.size()];
         for (int i = 0; i < allPlayers.size(); i++) {
             Player player = allPlayers.get(i);
@@ -53,7 +48,7 @@ public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bung
                 TextComponent.fromLegacyText(description)[0],
                 velocityIcon == null ? null : net.md_5.bungee.api.Favicon.create(velocityIcon.getBase64Url()));
 
-        PendingConnection pendingConnection = new BridgeSimplePendingConnection(proxyPingEvent.getConnection(), this.proxyServer);
+        PendingConnection pendingConnection = new BridgeSimplePendingConnection(proxyPingEvent.getConnection(), super.proxyServer);
 
         return new net.md_5.bungee.api.event.ProxyPingEvent(pendingConnection, serverPing, (result, error) -> {
         });

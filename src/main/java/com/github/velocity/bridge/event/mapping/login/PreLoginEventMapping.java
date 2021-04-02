@@ -19,7 +19,7 @@ public final class PreLoginEventMapping extends EventMapping<LoginEvent, PreLogi
     @Override
     public PreLoginEvent preparation(LoginEvent event) {
         Player player = event.getPlayer();
-        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer(), super.plugin.getServer());
+        PendingConnection pendingConnection = new BridgePendingConnection(event.getPlayer(), super.proxyServer);
         return new PreLoginEvent(pendingConnection, (result, error) -> {
             if (result.isCancelled()) {
                 player.disconnect(BungeeComponentSerializer.legacy().deserialize(result.getCancelReasonComponents()));
