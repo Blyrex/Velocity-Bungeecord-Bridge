@@ -23,4 +23,11 @@ public class TabCompleteEventMapping extends EventMapping<TabCompleteEvent, net.
                 tabCompleteEvent.getSuggestions()
         );
     }
+
+    @Override
+    protected void done(TabCompleteEvent tabCompleteEvent, net.md_5.bungee.api.event.TabCompleteEvent bungeeTabCompleteEvent) {
+        if(bungeeTabCompleteEvent.isCancelled()) {
+            tabCompleteEvent.getSuggestions().clear();
+        }
+    }
 }
