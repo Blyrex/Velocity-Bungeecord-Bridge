@@ -3,12 +3,14 @@ package com.github.velocity.bridge;
 import com.github.velocity.bridge.event.mapping.ChatEventMapping;
 import com.github.velocity.bridge.event.mapping.PingEventMapping;
 import com.github.velocity.bridge.event.mapping.PluginMessageEventMapping;
+import com.github.velocity.bridge.event.mapping.ProxyReloadEventMapping;
 import com.github.velocity.bridge.event.mapping.login.LoginEventMapping;
 import com.github.velocity.bridge.event.mapping.login.PostLoginEventMapping;
 import com.github.velocity.bridge.event.mapping.login.PreLoginEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerDisconnectEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerHandshakeEventMapping;
 import com.github.velocity.bridge.event.mapping.player.PlayerSettingsEventMapping;
+import com.github.velocity.bridge.event.mapping.player.TabCompleteEventMapping;
 import com.github.velocity.bridge.event.mapping.server.*;
 import com.github.velocity.bridge.velocity.command.BridgeCommandForward;
 import com.google.inject.Inject;
@@ -54,6 +56,7 @@ public class BungeeVelocityBridgePlugin {
 
         new PluginMessageEventMapping(this);
         new PingEventMapping(this);
+        new ProxyReloadEventMapping(this);
 
         new PreLoginEventMapping(this);
         new LoginEventMapping(this);
@@ -62,6 +65,7 @@ public class BungeeVelocityBridgePlugin {
         new PlayerDisconnectEventMapping(this);
         new PlayerHandshakeEventMapping(this);
         new PlayerSettingsEventMapping(this);
+        new TabCompleteEventMapping(this);
       
         new ServerConnectedMapping(this);
         new ServerConnectMapping(this);
