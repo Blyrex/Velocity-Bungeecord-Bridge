@@ -36,9 +36,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Getter
-public final class BridgeProxyServer extends ProxyServer {
+public class BridgeProxyServer extends ProxyServer {
 
-    public static final String NOT_SUPPORTED = "This feature is not supported by velocity, so the BungeeVelocityBridge cannot support it either";
+    public static final String NOT_SUPPORTED = "This feature is not supported by Velocity, so the BungeeVelocityBridge cannot support it either";
     private final BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin;
     private final com.velocitypowered.api.proxy.ProxyServer velocityProxyServer;
     private final CommandSender consoleCommandSender;
