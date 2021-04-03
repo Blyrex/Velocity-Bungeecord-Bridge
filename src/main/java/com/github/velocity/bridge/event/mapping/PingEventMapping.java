@@ -60,6 +60,7 @@ public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bung
     @Override
     protected void done(ProxyPingEvent proxyPingEvent, net.md_5.bungee.api.event.ProxyPingEvent bungeeProxyPingEvent) {
         ServerPing bungeeResponse = bungeeProxyPingEvent.getResponse();
+
         com.velocitypowered.api.proxy.server.ServerPing.Builder serverPingBuilder = com.velocitypowered.api.proxy.server.ServerPing
                 .builder()
                 .description(BungeeComponentSerializer.legacy().deserialize(new BaseComponent[]{bungeeResponse.getDescriptionComponent()}))
@@ -69,6 +70,7 @@ public class PingEventMapping extends EventMapping<ProxyPingEvent, net.md_5.bung
                         bungeeResponse.getVersion().getProtocol(),
                         bungeeResponse.getVersion().getName()
                 ));
+
         if (bungeeResponse.getFaviconObject() != null) {
             serverPingBuilder.favicon(new Favicon(bungeeResponse.getFaviconObject().getEncoded()));
         }
