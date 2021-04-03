@@ -1,7 +1,8 @@
 package com.github.velocity.bridge;
 
-import com.github.velocity.bridge.chat.BridgeProxyTitle;
 import com.github.velocity.bridge.console.BridgeConsoleSender;
+import com.github.velocity.bridge.other.BridgeProxyConfig;
+import com.github.velocity.bridge.other.BridgeProxyTitle;
 import com.github.velocity.bridge.player.BridgeProxiedPlayer;
 import com.github.velocity.bridge.scheduler.BridgeTaskScheduler;
 import com.github.velocity.bridge.server.BridgeServerInfo;
@@ -45,6 +46,7 @@ public class BridgeProxyServer extends ProxyServer {
     private final TaskScheduler taskScheduler;
     private final Path pluginsFolder;
     private final PluginManager pluginManager;
+    private final ProxyConfig proxyConfig;
 
     public BridgeProxyServer(BungeeVelocityBridgePlugin bungeeVelocityBridgePlugin) {
         // Set ProxyServer instance
@@ -55,6 +57,7 @@ public class BridgeProxyServer extends ProxyServer {
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
         this.pluginManager = new PluginManager(this, this.bungeeVelocityBridgePlugin);
+        this.proxyConfig = new BridgeProxyConfig(this.velocityProxyServer.getConfiguration());
         this.loadPlugins();
     }
 
@@ -248,7 +251,7 @@ public class BridgeProxyServer extends ProxyServer {
 
     @Override
     public ProxyConfig getConfig() {
-        return null;
+        return this.proxyConfig;
     }
 
     @Override

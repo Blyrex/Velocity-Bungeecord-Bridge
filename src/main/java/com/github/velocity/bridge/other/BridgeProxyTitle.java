@@ -1,4 +1,4 @@
-package com.github.velocity.bridge.chat;
+package com.github.velocity.bridge.other;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
