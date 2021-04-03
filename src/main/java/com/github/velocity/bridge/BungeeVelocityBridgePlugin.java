@@ -77,6 +77,6 @@ public class BungeeVelocityBridgePlugin {
 
     private void forwardRegistration() {
         this.server.getEventManager()
-                .register(this, new BridgeCommandForward(this.bungeeProxyServer, this.server));
+                .register(this, new BridgeCommandForward(this));
     }
 }
