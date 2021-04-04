@@ -38,7 +38,7 @@ public final class BridgeCommandForward {
                 commandEntry
                         .getValue()
                         .execute(BridgeProxiedPlayer.fromVelocity(this.plugin.getServer(), player), Arrays.copyOfRange(args, 1, args.length));
-                event.setResult(CommandExecuteEvent.CommandResult.allowed());
+                event.setResult(CommandExecuteEvent.CommandResult.denied());
                 break;
             }
         }
