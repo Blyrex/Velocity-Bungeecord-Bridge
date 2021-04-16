@@ -13,7 +13,11 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.*;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyConfig;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.ReconnectHandler;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ConfigurationAdapter;
@@ -201,12 +205,14 @@ public class BridgeProxyServer extends ProxyServer {
 
     @Override
     public ServerInfo constructServerInfo(String name, InetSocketAddress address, String motd, boolean restricted) {
-        return null;
+        com.velocitypowered.api.proxy.server.ServerInfo serverInfo = new com.velocitypowered.api.proxy.server.ServerInfo(name, address);
+        RegisteredServer registeredServer = this.velocityProxyServer.registerServer(serverInfo);
+        return new BridgeServerInfo(this.velocityProxyServer, registeredServer);
     }
 
     @Override
     public ServerInfo constructServerInfo(String name, SocketAddress address, String motd, boolean restricted) {
-        return null;
+        return this.constructServerInfo(name, (InetSocketAddress) address, motd, restricted);
     }
 
     @Override
