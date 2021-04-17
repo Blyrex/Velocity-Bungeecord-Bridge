@@ -9,6 +9,7 @@ Bungeecord to Velocity because of the plugins, this worry is no longer necessary
 
 **VBB** implements all functions of Bungeecord for Velocity, even influencing events is possible!
 
+## Contributing
 
-
-
+Feel free to collaborate on VBB, you can just clone the project and open a PR when you have improved and fixed
+something.
