@@ -14,5 +14,5 @@ Bungeecord to Velocity because of the plugins, this worry is no longer necessary
 Feel free to collaborate on VBB, you can just clone the project and open a PR when you have improved and fixed
 something.
 
-##Support
+## Support
 If you have any questions join our [discord](https://discord.gg/ZH3kSzrVRQ)
