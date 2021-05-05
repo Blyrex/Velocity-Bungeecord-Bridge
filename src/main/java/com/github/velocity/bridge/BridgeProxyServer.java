@@ -61,7 +61,7 @@ public class BridgeProxyServer extends ProxyServer {
         this.taskScheduler = new BridgeTaskScheduler(this.velocityProxyServer);
         this.pluginsFolder = this.setupPluginsFolder();
         this.pluginManager = new PluginManager(this, this.bungeeVelocityBridgePlugin);
-        this.proxyConfig = new BridgeProxyConfig(this.velocityProxyServer.getConfiguration());
+        this.proxyConfig = new BridgeProxyConfig(this.velocityProxyServer, this.velocityProxyServer.getConfiguration());
         this.loadPlugins();
     }
 

@@ -24,7 +24,7 @@ public class BridgeTaskScheduler implements TaskScheduler {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(Integer.MAX_VALUE);
     private final Random random = new Random();
-    private final Unsafe unsafe = (plugin -> this.executorService);
+    private final Unsafe unsafe = plugin -> this.executorService;
 
     @Override
     public void cancel(int id) {

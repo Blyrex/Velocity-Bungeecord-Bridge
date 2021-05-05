@@ -3,18 +3,13 @@ package com.github.velocity.bridge.connection;
 import com.github.velocity.bridge.BridgeProxyServer;
 import com.velocitypowered.api.proxy.InboundConnection;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.config.ProxyConfig;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ListenerInfo;
 import net.md_5.bungee.api.connection.PendingConnection;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -40,29 +35,7 @@ public class BridgeSimplePendingConnection implements PendingConnection {
 
     @Override
     public ListenerInfo getListener() {
-        ProxyConfig proxyConfig = this.proxyServer.getConfiguration();
-
-        Map<String, String> forcedHosts = new HashMap<>();
-
-        proxyConfig.getForcedHosts().forEach((key, value) -> {
-            forcedHosts.put(key, value.get(0));
-        });
-
-        return new ListenerInfo(
-                this.getSocketAddress(),
-                LegacyComponentSerializer.legacySection().serialize(proxyConfig.getMotd()),
-                proxyConfig.getShowMaxPlayers(),
-                proxyConfig.getShowMaxPlayers(),
-                new ArrayList<>(proxyConfig.getServers().values()),
-                false,
-                forcedHosts,
-                "GLOBAL_PING",
-                true,
-                false,
-                25577,
-                false,
-                false
-        );
+        return BridgeListenerInfo.constructListenerInfo(this.connection, this.proxyServer);
     }
 
     @Override
