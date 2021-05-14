@@ -10,7 +10,11 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.md_5.bungee.api.*;
+import net.md_5.bungee.api.Callback;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.ServerConnectRequest;
+import net.md_5.bungee.api.SkinConfiguration;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -20,7 +24,15 @@ import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.score.Scoreboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -121,7 +133,7 @@ public final class BridgeProxiedPlayer extends BridgePendingConnection implement
 
     @Override
     public PendingConnection getPendingConnection() {
-        return new BridgePendingConnection(this.player, this.velocityProxyServer);
+        return this;
     }
 
     @Override
@@ -136,16 +148,6 @@ public final class BridgeProxiedPlayer extends BridgePendingConnection implement
 
     @Override
     public void setReconnectServer(ServerInfo server) {
-    }
-
-    @Override
-    public String getUUID() {
-        return this.player.getUniqueId().toString();
-    }
-
-    @Override
-    public UUID getUniqueId() {
-        return this.player.getUniqueId();
     }
 
     @Override
@@ -298,5 +300,18 @@ public final class BridgeProxiedPlayer extends BridgePendingConnection implement
 
     public static ProxiedPlayer fromVelocity(ProxyServer velocityProxyServer, Player player) {
         return new BridgeProxiedPlayer(velocityProxyServer, player);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BridgeProxiedPlayer)) return false;
+        BridgeProxiedPlayer that = (BridgeProxiedPlayer) o;
+        return this.player.getUniqueId().equals(that.player.getUniqueId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.player.getUniqueId());
     }
 }
