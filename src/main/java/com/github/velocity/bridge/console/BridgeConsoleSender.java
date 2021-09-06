@@ -1,15 +1,14 @@
 package com.github.velocity.bridge.console;
 
 import com.velocitypowered.api.proxy.ProxyServer;
+import java.util.Collection;
+import java.util.Collections;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 @RequiredArgsConstructor
@@ -75,6 +74,6 @@ public final class BridgeConsoleSender implements CommandSender {
 
     @Override
     public Collection<String> getPermissions() {
-        return Collections.emptyList();
+        return Collections.singletonList("*");
     }
 }
